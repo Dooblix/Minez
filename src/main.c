@@ -10,7 +10,7 @@
 // Project headers
 #include "../include/minez_docs.h"
 #include "../include/interpreter.h"
-#include "../include/helper_functions.h"
+#include "../include/vectors.h"
 
 int main(int argc, char* argv[]) {
 
@@ -64,11 +64,14 @@ int main(int argc, char* argv[]) {
     vector_char code = make_vector_char(50);
     size_t code_len = 0;
     while ((curr_ch = fgetc(file)) != EOF) {
-        vector_char_push(&code, (char)curr_ch);
+        if (curr_ch == '>' || curr_ch == '<' || curr_ch == '+' || curr_ch == '-' || curr_ch == '.' || curr_ch == ',' || curr_ch == '[' || curr_ch == ']') {
+            vector_char_push(&code, (char)curr_ch);
+        }
     }
+    fclose(file);
     
     interprete(code, hide_input_prompts, num_of_regs);
 
-    fclose(file);
+    free(code.data);
     return 0;
 }
