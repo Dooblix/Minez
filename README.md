@@ -4,18 +4,62 @@
 
 ---
 
+## Installation
+
+Download or clone the Minez repository to your desired location.
+
+### Windows
+
+1. Open a terminal (e.g., PowerShell or Command Prompt).
+2. Navigate to the Minez installation directory:
+
+   ```powershell
+   cd "C:\Path\to\Minez"
+   ```
+
+   *Replace `C:\Path\to\Minez` with your actual installation path.*
+3. Run the script to add Minez to your system PATH:
+
+   ```powershell
+   .\add_to_path.bat
+   ```
+
+   Alternatively, you can double-click the `add_to_path.bat` file.
+
+After completion, the `minez` command will be available in any terminal.
+
+---
+
+### Linux / macOS
+
+1. Open a terminal and check your shell:
+
+   ```bash
+   echo $SHELL
+   ```
+2. Add the Minez directory to your PATH, depending on your shell:
+
+   **Bash**:
+
+   ```bash
+   echo 'export PATH="$PATH:/path/to/minez"' >> ~/.bashrc
+   source ~/.bashrc
+   ```
+
+   **Zsh**:
+
+   ```bash
+   echo 'export PATH="$PATH:/path/to/minez"' >> ~/.zshrc
+   source ~/.zshrc
+   ```
+
+   *Replace `/path/to/minez` with the actual installation path.*
+
+Once completed, the `minez` command will be available globally.
+
+---
+
 ## Usage
-
-1. **Installation**
-   Download the Minez folder and place it in your desired location. Then run:
-
-   ```
-   add_to_path.bat
-   ```
-
-   This will enable the `minez` command in your terminal.
-
-2. **Basic Usage**
 
    ```
    minez <file>
@@ -23,7 +67,7 @@
 
    * `<file>`: Name of the `.minez` file to execute.
 
-3. **Optional Arguments**
+**Optional Arguments**
 
    * `--hide-input-prompts`
      Disables all default input prompts (`Int:` and `Char:`).

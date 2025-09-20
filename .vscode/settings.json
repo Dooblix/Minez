@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "vectors.h": "c",
-        "minez_docs.h": "c"
+        "minez_docs.h": "c",
+        "getch.h": "c"
     }
 }

@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <conio.h>
 
+#include "../include/getch.h"
 #include "../include/vectors.h"
 
 size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
