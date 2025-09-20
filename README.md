@@ -88,7 +88,7 @@
 
 | Command | Description                                  |
 | ------- | -------------------------------------------- |
-| `|`     | Save current pointer index (`index_memory`). |
+| `\|`     | Save current pointer index (`index_memory`). |
 | `->`    | Jump to last saved index.                    |
 | `->(y)` | Jump to the `y`-th saved index.              |
 | `X`     | Delete last saved index.                     |
