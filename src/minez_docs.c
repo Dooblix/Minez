@@ -40,32 +40,7 @@ void table(const char* commands[][2], int n) {
 }
 
 void print_docs() {
-    printf("\n%sMinez Documentation%s\n\n", BOLD, RESET);
-    printf("%sMinez is an esoteric programming language created by %sDooblix%s%s "
-           "in 2024 (current version: 2025), designed to be a more accessible and "
-           "powerful version of %sBrainfuck%s.%s\n",
-           WHITE, ITALIC, RESET, WHITE, ITALIC, RESET, RESET);
-
-    printf("%s\n", "--------------------------------------------------------------------------------");
-
-    section("Usage");
-    printf("%s1. Installation%s\n", BOLD, RESET);
-    printf("Download the Minez folder and place it in your desired location. Then run:\n\n");
-    printf("    add_to_path.bat\n");
-    printf("This will enable the `minez` command in your terminal.\n\n");
-
-    printf("%s2. Basic Usage%s\n", BOLD, RESET);
-    printf("    minez <file>\n");
-    printf("    * `<file>`: Name of the `.minez` file to execute.\n\n");
-
-    printf("%s3. Optional Arguments%s\n", BOLD, RESET);
-    printf("    * `--hide-input-prompts`\n");
-    printf("      Disables all default input prompts (`Int:` and `Char:`).\n");
-    printf("    * `--num-of-regs <x>`\n");
-    printf("      Sets the number of available memory cells to `x`.\n");
-    printf("    * `--docs`\n");
-    printf("      Prints this documentation file.\n\n");
-
+    printf("\n%sMinez Documentation%s\n", BOLD, RESET);
     const char* pointer_ops[][2] = {
         {">y", "Move pointer to absolute index y."},
         {">",  "Increment pointer by 1."},

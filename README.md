@@ -61,7 +61,7 @@ Once completed, the `minez` command will be available globally.
 
 ## Usage
 
-   ```
+   ```powershell
    minez <file>
    ```
 
@@ -76,7 +76,7 @@ Once completed, the `minez` command will be available globally.
      Sets the number of available memory cells to `x`.
 
    * `--docs`
-     Prints this documentation file.
+     Prints syntax reference.
 
 ---
 
