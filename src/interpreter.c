@@ -41,7 +41,7 @@ size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
         }
         endloop++;
     }
-    fprintf(stderr, "SyntaxError at index %u: Missing closing brakcet ']'.", pc);
+    fprintf(stderr, "SyntaxError at index %u: Missing closing bracket ']'.", pc);
     exit(1);
 }
 
@@ -129,7 +129,7 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
             case ']':
                 if (loop_stack.size == 0) {
                     fprintf(stderr, 
-                        RED "LoopError" RESET ": unmatched closing bracket ']'\n"
+                        RED "SyntaxError" RESET ": unmatched closing bracket ']'\n"
                         "  At instruction index " CYAN "%zu\n" RESET
                         "  The loop stack is empty; no matching opening '[' found.\n",
                         pc
