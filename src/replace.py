@@ -1,5 +1,7 @@
-with open(r"C:\Users\Tim\Desktop\Self-Made Langs\Minez C\src\test.txt", "r") as f:
-    text = f.read().replace("\n", "")
+minez_chars = ['>', '<', '+', '-', '[', ']', '.', ':', '#', '!', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '{', '}', '(', ')', 'd', 's', 'x', 'X', '^', '@', '_', '|']
 
-with open(r"C:\Users\Tim\Desktop\Self-Made Langs\Minez C\src\test.txt", "w") as f:
-    f.write(text)
+result = ""
+for char in minez_chars:
+    result += f"curr_ch == '{char}' || "
+
+print(result)

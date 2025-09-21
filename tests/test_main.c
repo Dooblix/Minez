@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 // Project headers
 #include "../include/vectors.h"
 
@@ -25,9 +26,21 @@ size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
     exit(1);
 }
 
+long extract_number(char* code, size_t code_len, size_t* pc) {
+    (*pc)++;
+    vector_char result = make_vector_char(1);
+    while (*pc < code_len && isdigit((unsigned char)code[*pc])) {
+        vector_char_push(&result, code[*pc]);
+        (*pc)++;
+    }
+    vector_char_push(&result, '\0');
+    return strtol(result.data, NULL, 10);
+}
+
 int main() {
-    char* code = "++++[>++++<-]>.";
-    size_t code_len = 15;
-    size_t endloop = search_for_endloop(code, code_len, 4);
-    printf("%zu", endloop);
+    char* code = "++>1036;";
+    size_t code_len = 5;
+    size_t pc = 2;
+    long number = extract_number(code, code_len, &pc);
+    printf("%ld\n%zu", number, pc);
 }

@@ -2,6 +2,8 @@
     "files.associations": {
         "vectors.h": "c",
         "minez_docs.h": "c",
-        "getch.h": "c"
+        "getch.h": "c",
+        "conio.h": "c",
+        "helper_functions.h": "c"
     }
 }

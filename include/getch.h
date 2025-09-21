@@ -2,7 +2,7 @@
 #ifndef GETCH_H
 #define GETCH_H
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
     #include <conio.h>
 #else
     #include <termios.h>
