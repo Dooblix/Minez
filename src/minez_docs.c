@@ -1,3 +1,7 @@
+// minez_docs.c
+// Copyright (c) 2025 Dooblix
+// Licensed under the MIT license. See LICENSE file for details.
+
 #include <stdio.h>
 #include <string.h>
 #include "../include/minez_docs.h"

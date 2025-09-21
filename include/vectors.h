@@ -25,9 +25,9 @@ void vector_size_t_push(vector_size_t* v, size_t val);
 vector_int make_vector_int(size_t initial_capacity);
 void vector_int_push(vector_int* v, int val);
 vector_char make_vector_char(size_t initial_capacity);
-void vector_char_push(vector_char* v, char val);
+void vector_char_push(vector_char* v, unsigned char val);
 size_t vector_size_t_pop(vector_size_t* v);
 int vector_int_pop(vector_int* v);
-char vector_char_pop(vector_char* v);
+unsigned char vector_char_pop(vector_char* v);
 
 #endif

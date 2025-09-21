@@ -10,6 +10,7 @@
 #include "../include/getch.h"
 #include "../include/vectors.h"
 
+#define BOLD    "\033[1m"
 #define CYAN "\033[36m"
 #define RED  "\033[31m"
 #define GREEN "\033[32m"
@@ -28,8 +29,8 @@ long extract_number(char* code, size_t code_len, size_t* pc) {
 }
 
 size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
-    size_t endloop = pc;
-    size_t loop_depth = 0;
+    size_t endloop = pc + 1;
+    size_t loop_depth = 1;
     while (endloop < code_len) {
         if (code[endloop] == '[') {
             loop_depth++;
@@ -41,21 +42,23 @@ size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
         }
         endloop++;
     }
-    fprintf(stderr, "SyntaxError at index %u: Missing closing bracket ']'.", pc);
+    fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%u" RESET ": Missing closing bracket ']'.", pc);
     exit(1);
 }
 
-void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
+void interprete(vector_char code, int num_of_regs) {
 
     size_t code_len = code.size;
     size_t pc = 0;
     int* memory = calloc(num_of_regs, sizeof(int));
+    vector_int stack = make_vector_int(1);
     size_t ptr = 0;
-    vector_size_t loop_stack = make_vector_size_t(2);
+    vector_size_t loop_stack = make_vector_size_t(1);
 
     while (pc < code_len) {
         char cmd = code.data[pc];
         switch (cmd) {
+
             case '>':
                 if (isdigit(code.data[pc + 1])) {
                     ptr = (size_t)extract_number(code.data, code_len, &pc);
@@ -64,7 +67,7 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
                 }
                 if (ptr >= num_of_regs) {
                     fprintf(stderr,
-                        RED "IndexError" RESET ": pointer out of bounds\n"
+                        RED BOLD "\nIndexError" RESET ": pointer out of bounds\n"
                         "  At instruction index" CYAN " %zu " RESET "(command '>y')\n"
                         "  Pointer value:" RED " %zu " RESET "(Number of available memory cells: " CYAN "%d" RESET ")"
                         "\n"
@@ -75,12 +78,13 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
                     exit(1);
                 }
                 break;
+
             case '<':
                 if (ptr > 0) {
                     ptr--;
                 } else {
                     fprintf(stderr,
-                        RED "IndexError" RESET ": pointer out of bounds\n"
+                        RED BOLD "\nIndexError" RESET ": pointer out of bounds\n"
                         "  At instruction index" CYAN " %zu " RESET "(command '<')\n"
                         "  Pointer value:" RED " %zu" RESET "\n(Pointer value underflowed to a very large number due to unsigned wraparound)\n",
                         pc, ptr-1
@@ -88,6 +92,7 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
                     exit(1);
                 }
                 break;
+
             case '+':
                 if (isdigit(code.data[pc + 1])) {
                     memory[ptr] += extract_number(code.data, code_len, &pc);
@@ -95,6 +100,7 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
                     memory[ptr]++;
                 }
                 break;
+
             case '-':
                 if (isdigit(code.data[pc + 1])) {
                     memory[ptr] -= extract_number(code.data, code_len, &pc);
@@ -102,11 +108,49 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
                     memory[ptr]--;
                 }
                 break;
+
+            case 'x':
+                memory[ptr] = 0;
+                break;
+
+            case '^':
+                if (code.data[pc + 1] == 's') {
+                    pc = (size_t)vector_int_pop(&stack);
+                    continue;
+                }
+                if (!(isdigit(code.data[pc + 1]))) {
+                    fprintf(stderr,
+                        RED BOLD "SyntaxError" RESET ": missing parameter for '^'.\n"
+                        "  At instruction index" CYAN " %zu " RESET ":\n"
+                        "  '^' has to be followed by an unsigned integer or 's'.\n"
+                    );
+                    exit(1);
+                }
+                long param = extract_number(code.data, code_len, &pc);
+                vector_int_push(&stack, pc+1);
+                pc = (size_t)param;
+                if (pc >= code_len) {
+                    fprintf(stderr,
+                        RED BOLD "\nIndexError" RESET ": program counter out of bounds\n"
+                        "  At instruction index" CYAN " %zu " RESET "(command '^')\n"
+                        "  PC value:" RED " %zu" RESET "\n"
+                        "  Largest possible '^'-parameter: " GREEN "%zu" RESET "\n",
+                        pc, ptr-1, code_len-1
+                    );
+                    exit(1);
+                }
+                continue;
+
             case '#':
+                if (code.data[pc+1] == '!') {
+                    printf("%d", memory[ptr]);
+                    pc++;
+                    break;
+                }
                 if (memory[ptr] < 0 || memory[ptr] > 255) {
                     fprintf(stderr,
-                        RED "ValueError" RESET ": cannot print cell value\n"
-                        "  At instruction index" CYAN " %zu " RESET "(command '.'): \n"
+                        RED BOLD "\nValueError" RESET ": cannot print cell value\n"
+                        "  At instruction index" CYAN " %zu " RESET "(command '.'):\n"
                         "  Cell[" CYAN "%zu" RESET "] =" RED " %d " RESET"(valid range: " GREEN "0-255" RESET ")\n",
                         pc, ptr, memory[ptr]
                     );
@@ -114,11 +158,45 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
                 }
                 printf("%c", (unsigned char)memory[ptr]);
                 break;
+
             case '.':
                 int inp = getch();
                 printf("%c", inp);
                 memory[ptr] = (unsigned char)inp;
                 break;
+
+            case ':':
+                int input;
+                if (scanf("%d", &input) == 1) {
+                    memory[ptr] = input;
+                } else {
+                    fprintf(stderr,
+                            RED BOLD "\nInputError" RESET ": expected an integer.\n"
+                            "  At instuction index " CYAN "%zu" RESET " (command ':'):\n"
+                            "  Provided input is not a valid integer.\n",
+                            pc
+                    );
+                    exit(1);
+                }
+                break;
+
+            case '@':
+                vector_int_push(&stack, memory[ptr]);
+                break;
+
+            case '_':
+                if (stack.size > 0) {
+                    memory[ptr] += vector_int_pop(&stack);
+                    break;
+                } else {
+                    fprintf(stderr,
+                        RED BOLD "\nStackError" RESET ": attempted to pop from empty stack.\n"
+                        "  At instruction index " CYAN "%zu" RESET " (command: '_')\n",
+                        pc
+                    );
+                    exit(1);
+                }
+
             case '[':
                 if (memory[ptr] == 0) {
                     pc = search_for_endloop(code.data, code_len, pc);
@@ -126,10 +204,11 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
                     vector_size_t_push(&loop_stack, pc);
                 }
                 break;
+
             case ']':
                 if (loop_stack.size == 0) {
                     fprintf(stderr, 
-                        RED "SyntaxError" RESET ": unmatched closing bracket ']'\n"
+                        RED BOLD "\nSyntaxError" RESET ": unmatched closing bracket ']'\n"
                         "  At instruction index " CYAN "%zu\n" RESET
                         "  The loop stack is empty; no matching opening '[' found.\n",
                         pc
@@ -142,12 +221,32 @@ void interprete(vector_char code, bool hide_input_prompts, int num_of_regs) {
                     vector_size_t_pop(&loop_stack);
                 }
                 break;
+
+            case '~':
+                 if (loop_stack.size == 0) {
+                    fprintf(stderr, 
+                        RED BOLD "\nSyntaxError" RESET ": '~' (continue) outside of loop\n"
+                        "  At instruction index " CYAN "%zu\n" RESET
+                        "  The loop stack is empty.\n",
+                        pc
+                    );
+                    exit(1);
+                }
+                if (memory[ptr] != 0) {
+                    pc = loop_stack.data[loop_stack.size - 1];
+                } else {
+                    vector_size_t_pop(&loop_stack);
+                    pc = search_for_endloop(code.data, code_len, pc);
+                }
+                break;
+
             case ';':
                 printf("\nProgram halted at index %zu.", pc);
                 pc = code_len;
                 break;
+
             default:
-                fprintf(stderr, RED "\nError" RESET ": Unknown command '" RED "%c" RESET"' at index " CYAN "%d" RESET ".", code.data[pc], pc);
+                fprintf(stderr, RED BOLD "\nError" RESET ": Unknown command '" RED "%c" RESET"' at index " CYAN "%d" RESET ".", code.data[pc], pc);
                 exit(1);
         }
         pc++;

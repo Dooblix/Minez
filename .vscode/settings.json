@@ -4,6 +4,7 @@
         "minez_docs.h": "c",
         "getch.h": "c",
         "conio.h": "c",
-        "helper_functions.h": "c"
+        "helper_functions.h": "c",
+        "string.h": "c"
     }
 }

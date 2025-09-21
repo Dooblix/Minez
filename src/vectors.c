@@ -1,4 +1,4 @@
-// helper_functions.c
+// vectors.c
 // Copyright (c) 2025 Dooblix
 // Licensed under the MIT license. See LICENSE file for details.
 
@@ -72,7 +72,7 @@ vector_char make_vector_char(size_t initial_capacity) {
     vector_char v;
     v.size = 0;
     v.capacity = initial_capacity;
-    v.data = malloc(initial_capacity * sizeof(char));
+    v.data = malloc(initial_capacity * sizeof(unsigned char));
     if (!v.data) {
         fprintf(stderr, "Error: malloc failed\n");
         exit(1);
@@ -80,17 +80,17 @@ vector_char make_vector_char(size_t initial_capacity) {
     return v;
 }
 
-void vector_char_push(vector_char* v, char val) {
+void vector_char_push(vector_char* v, unsigned char val) {
     if (v->size >= v->capacity) {
         v->capacity = (v->capacity == 0) ? 1 : v->capacity * 2;
-        char* tmp = realloc(v->data, v->capacity * sizeof(char));
+        unsigned char* tmp = realloc(v->data, v->capacity * sizeof(unsigned char));
         if (!tmp) exit(1);
         v->data = tmp;
     }
     v->data[v->size++] = val;
 }
 
-char vector_char_pop(vector_char* v) {
+unsigned char vector_char_pop(vector_char* v) {
     if (v->size > 0) {
         v->size--;
         return v->data[v->size];

@@ -25,9 +25,7 @@ int main(int argc, char* argv[]) {
     bool docs = false;
 
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--hide-input-prompts") == 0) {
-            hide_input_prompts = true;
-        } else if (strcmp(argv[i], "--docs") == 0) {
+        if (strcmp(argv[i], "--docs") == 0) {
             docs = true;
         } else if (strcmp(argv[i], "--num-of-regs") == 0) {
             if (i + 1 < argc) {
@@ -65,13 +63,17 @@ int main(int argc, char* argv[]) {
     size_t code_len = 0;
     while ((curr_ch = fgetc(file)) != EOF) {
         // only add valid minez chars
-        if (curr_ch == '>' || curr_ch == '<' || curr_ch == '+' || curr_ch == '-' || curr_ch == '[' || curr_ch == ']' || curr_ch == '.' || curr_ch == ':' || curr_ch == '#' || curr_ch == '!' || curr_ch == '0' || curr_ch == '1' || curr_ch == '2' || curr_ch == '3' || curr_ch == '4' || curr_ch == '5' || curr_ch == '6' || curr_ch == '7' || curr_ch == '8' || curr_ch == '9' || curr_ch == '{' || curr_ch == '}' || curr_ch == '(' || curr_ch == ')' || curr_ch == 'd' || curr_ch == 's' || curr_ch == 'x' || curr_ch == 'X' || curr_ch == '^' || curr_ch == '@' || curr_ch == '_' || curr_ch == '|' || curr_ch == ';') {
+        if (curr_ch == '>' || curr_ch == '<' || curr_ch == '+' || curr_ch == '-' || curr_ch == '[' || curr_ch == ']' || curr_ch == '~' || curr_ch == '.' || curr_ch == ':' || curr_ch == '#' || curr_ch == '!' || curr_ch == '0' || curr_ch == '1' || curr_ch == '2' || curr_ch == '3' || curr_ch == '4' || curr_ch == '5' || curr_ch == '6' || curr_ch == '7' || curr_ch == '8' || curr_ch == '9' || curr_ch == '{' || curr_ch == '}' || curr_ch == '(' || curr_ch == ')' || curr_ch == 'd' || curr_ch == 's' || curr_ch == 'x' || curr_ch == 'X' || curr_ch == '^' || curr_ch == '@' || curr_ch == '_' || curr_ch == '|' || curr_ch == ';') {
             vector_char_push(&code, (char)curr_ch);
         }
     }
     fclose(file);
     
-    interprete(code, hide_input_prompts, num_of_regs);
+    if (code.data[code.size-1] != ';') {
+        vector_char_push(&code, ';');
+    }
+
+    interprete(code, num_of_regs);
 
     free(code.data);
     return 0;
