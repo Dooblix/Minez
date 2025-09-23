@@ -33,13 +33,14 @@ long extract_number(char* code, size_t code_len, size_t* pc) {
         vector_char_push(&result, code[*pc]);
         (*pc)++;
     }
+    (*pc)--;
     vector_char_push(&result, '\0');
     return strtol(result.data, NULL, 10);
 }
 
 int main() {
     char* code = "++>1036;";
-    size_t code_len = 5;
+    size_t code_len = 8;
     size_t pc = 2;
     long number = extract_number(code, code_len, &pc);
     printf("%ld\n%zu", number, pc);

@@ -53,6 +53,7 @@ void interprete(vector_char code, int num_of_regs) {
     int* memory = calloc(num_of_regs, sizeof(int));
     vector_int stack = make_vector_int(1);
     size_t ptr = 0;
+    vector_size_t index_memory = make_vector_size_t(1);
     vector_size_t loop_stack = make_vector_size_t(1);
 
     while (pc < code_len) {
@@ -104,6 +105,45 @@ void interprete(vector_char code, int num_of_regs) {
             case '-':
                 if (isdigit(code.data[pc + 1])) {
                     memory[ptr] -= extract_number(code.data, code_len, &pc);
+                } else if (code.data[pc + 1] == '>') {
+                    if (index_memory.size > 0) {
+                        if (code.data[pc + 2] == '(') {
+                            pc += 2;
+                            long num = extract_number(code.data, code_len, &pc);
+                            if (code.data[pc + 1] != ')') {
+                                fprintf(stderr, 
+                                    RED BOLD "\nSyntaxError" RESET ": unmatched closing bracket ')'\n"
+                                    "  At instruction index " CYAN "%zu\n" RESET,
+                                    pc
+                                );
+                                exit(1);
+                            } else {
+                                pc++;
+                            }
+                            if (num < 0 || num >= index_memory.size) {
+                                fprintf(stderr,
+                                    RED BOLD "\nIndexError" RESET ": param for '->(y)' out of bounds\n"
+                                    "  At instruction index" CYAN " %zu " RESET "\n"
+                                    "  Value:" RED " %zu" RESET "\n"
+                                    "  Valid range: " GREEN "0-%zu" RESET "\n",
+                                    pc-2, num, index_memory.size-1
+                                );
+                                exit(1);
+                            } else {
+                                ptr = index_memory.data[num];
+                            }
+                        } else {
+                            ptr = index_memory.data[index_memory.size - 1];
+                            pc++;
+                        }
+                    } else {
+                        fprintf(stderr,
+                            RED BOLD "\nStackError" RESET ": attempted to access empty index_memory.\n"
+                            "  At instruction index " CYAN "%zu" RESET " (command: '->')\n",
+                            pc
+                        );
+                        exit(1);
+                    }
                 } else {
                     memory[ptr]--;
                 }
@@ -111,6 +151,22 @@ void interprete(vector_char code, int num_of_regs) {
 
             case 'x':
                 memory[ptr] = 0;
+                break;
+
+            case '|':
+                vector_size_t_push(&index_memory, ptr);
+                break;
+
+            case 'X':
+                if (index_memory.size == 0) {
+                     fprintf(stderr,
+                        RED BOLD "\nStackError" RESET ": attempted to pop from empty index_memory.\n"
+                        "  At instruction index " CYAN "%zu" RESET " (command: 'X')\n",
+                        pc
+                    );
+                    exit(1);
+                }
+                vector_size_t_pop(&index_memory);
                 break;
 
             case '^':
@@ -259,6 +315,24 @@ void interprete(vector_char code, int num_of_regs) {
     }
     printf("%d\n", memory[num_of_regs - 1]);
     printf("Pointer: %zu\n", ptr);
+    printf("Stack: ");
+    if (stack.size > 0) {
+        for (size_t i = 0; i < stack.size - 1; i++) {
+            printf("%d, ", stack.data[i]);
+        }
+        printf("%d\n", stack.data[stack.size - 1]);
+    } else {
+        printf("empty\n");
+    }
+    printf("Index memory: ");
+    if (index_memory.size > 0) {
+        for (size_t i = 0; i < index_memory.size - 1; i++) {
+            printf("%d, ", index_memory.data[i]);
+        }
+        printf("%d\n", index_memory.data[index_memory.size - 1]);
+    } else {
+        printf("empty\n");
+    }
     printf("Press any key to continue...");
     getch();
 }
