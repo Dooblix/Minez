@@ -64,7 +64,6 @@
             >12+>8@x>0_[>8+>0+] // inverts b and sets negative flag
         )
     )
-    
 
     >8@>10_>8[>11-1>8-] // copys b for comparing and creates additive inverse for subtracting from remainder
     >6[{6<10}(>0~)>11@>6_>9+] // actual algorithm: repeatedly subtracts b from a and increments a variable until a < b
