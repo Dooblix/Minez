@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     size_t code_len = 0;
     while ((curr_ch = fgetc(file)) != EOF) {
         // only add valid minez chars
-        if (curr_ch == '>' || curr_ch == '<' || curr_ch == '+' || curr_ch == '-' || curr_ch == '[' || curr_ch == ']' || curr_ch == '~' || curr_ch == '.' || curr_ch == ':' || curr_ch == '#' || curr_ch == '!' || curr_ch == '0' || curr_ch == '1' || curr_ch == '2' || curr_ch == '3' || curr_ch == '4' || curr_ch == '5' || curr_ch == '6' || curr_ch == '7' || curr_ch == '8' || curr_ch == '9' || curr_ch == '{' || curr_ch == '}' || curr_ch == '(' || curr_ch == ')' || curr_ch == 'd' || curr_ch == 's' || curr_ch == 'x' || curr_ch == 'X' || curr_ch == '^' || curr_ch == '@' || curr_ch == '_' || curr_ch == '|' || curr_ch == ';') {
+        if (curr_ch == '>' || curr_ch == '<' || curr_ch == '+' || curr_ch == '-' || curr_ch == '[' || curr_ch == ']' || curr_ch == '~' || curr_ch == '.' || curr_ch == ':' || curr_ch == '#' || curr_ch == '!' || curr_ch == '0' || curr_ch == '1' || curr_ch == '2' || curr_ch == '3' || curr_ch == '4' || curr_ch == '5' || curr_ch == '6' || curr_ch == '7' || curr_ch == '8' || curr_ch == '9' || curr_ch == '{' || curr_ch == '}' || curr_ch == '(' || curr_ch == ')' || curr_ch == 'd' || curr_ch == 's' || curr_ch == 'x' || curr_ch == 'X' || curr_ch == '^' || curr_ch == '@' || curr_ch == '_' || curr_ch == '=' || curr_ch == 'i' || curr_ch == '|' || curr_ch == ';') {
             vector_char_push(&code, (char)curr_ch);
         }
     }

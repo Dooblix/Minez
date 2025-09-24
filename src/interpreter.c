@@ -28,6 +28,24 @@ long extract_number(char* code, size_t code_len, size_t* pc) {
     return strtol(result.data, NULL, 10);
 }
 
+size_t search_for_endif(char* code, size_t code_len, size_t pc) {
+    size_t endif = pc + 1;
+    size_t depth = 1;
+    while (endif < code_len) {
+        if (code[endif] == '(') {
+            depth++;
+        } else if (code[endif] == ')') {
+            depth--;
+            if (depth == 0) {
+                return endif;
+            }
+        }
+        endif++;
+    }
+    fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%u" RESET ": Missing closing bracket ')'.", pc);
+    exit(1);
+}
+
 size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
     size_t endloop = pc + 1;
     size_t loop_depth = 1;
@@ -120,7 +138,7 @@ void interprete(vector_char code, int num_of_regs) {
                             } else {
                                 pc++;
                             }
-                            if (num < 0 || num >= index_memory.size) {
+                            if (num >= index_memory.size) {
                                 fprintf(stderr,
                                     RED BOLD "\nIndexError" RESET ": param for '->(y)' out of bounds\n"
                                     "  At instruction index" CYAN " %zu " RESET "\n"
@@ -253,6 +271,100 @@ void interprete(vector_char code, int num_of_regs) {
                     exit(1);
                 }
 
+            case '{':
+                
+                size_t reg1;
+                if (isdigit(code.data[pc + 1])) {
+                    reg1 = (size_t)extract_number(code.data, code_len, &pc);
+                    if (reg1 >= num_of_regs) {
+                        fprintf(stderr,
+                            RED BOLD "\nIndexError" RESET ": first parameter for if command out of bounds\n"
+                            "  At instruction index" CYAN " %zu " RESET "(command '{}')\n"
+                            "  Value:" RED " %zu " RESET "(Number of available memory cells: " CYAN "%d" RESET ")"
+                            "\n"
+                            "Hint: Increase the number of available memory cells:\n"
+                            "  minez <file> --num-of-regs" GREEN " %zu " RESET "<-- HERE\n",
+                            pc, ptr, num_of_regs, ptr+1
+                        );
+                        exit(1);
+                    }
+                } else if (code.data[pc + 1] == 'i') {
+                    reg1 = ptr;
+                    pc++;
+                } else {
+                    fprintf(stderr,
+                        RED BOLD "\nSyntaxError" RESET ": invalid first parameter for 'if' command\n"
+                        "  At instruction index" CYAN " %zu " RESET "(command '{}')\n"
+                        "  Found character:" RED " '%c' " RESET "(expected uint or 'i')\n",
+                        pc, code.data[pc + 1]
+                    );
+                    exit(1);
+                }
+                unsigned char op = code.data[++pc];
+                size_t reg2;
+                if (isdigit(code.data[pc + 1])) {
+                    reg2 = (size_t)extract_number(code.data, code_len, &pc);
+                    if (reg2 >= num_of_regs) {
+                        fprintf(stderr,
+                            RED BOLD "\nIndexError" RESET ": second parameter for if command out of bounds\n"
+                            "  At instruction index" CYAN " %zu " RESET "(command '{}')\n"
+                            "  Value:" RED " %zu " RESET "(Number of available memory cells: " CYAN "%d" RESET ")"
+                            "\n"
+                            "Hint: Increase the number of available memory cells:\n"
+                            "  minez <file> --num-of-regs" GREEN " %zu " RESET "<-- HERE\n",
+                            pc, ptr, num_of_regs, ptr+1
+                        );
+                        exit(1);
+                    }
+                } else if (code.data[pc + 1] == 'i') {
+                    reg2 = ptr;
+                    pc++;
+                } else {
+                    fprintf(stderr,
+                        RED BOLD "\nSyntaxError" RESET ": invalid second parameter for 'if' command\n"
+                        "  At instruction index" CYAN " %zu " RESET "(command '{}')\n"
+                        "  Found character:" RED " '%c' " RESET "(expected uint or 'i')\n",
+                        pc, code.data[pc + 1]
+                    );
+                    exit(1);
+                }
+                if (code.data[pc + 2] != '(') {
+                    fprintf(stderr, 
+                        RED BOLD "\nSyntaxError" RESET ": missing opening bracket '(' after 'if' command\n"
+                        "  At instruction index " CYAN "%zu" RESET " (command '{}')\n",
+                        pc
+                    );
+                    exit(1);
+                }
+                if (op == '=') {
+                    if (memory[reg1] == memory[reg2]) {
+                        pc += 2;
+                    } else {
+                        pc = search_for_endif(code.data, code_len, pc + 2);
+                    }
+                } else if (op == '<') {
+                    if (memory[reg1] < memory[reg2]) {
+                        pc += 2;
+                    } else {
+                        pc = search_for_endif(code.data, code_len, pc + 2);
+                    }
+                } else if (op == '>') {
+                    if (memory[reg1] > memory[reg2]) {
+                        pc += 2;
+                    } else {
+                        pc = search_for_endif(code.data, code_len, pc + 2);
+                    }
+                } else {
+                    fprintf(stderr,
+                        RED BOLD "\nSyntaxError" RESET ": invalid operator for 'if' command\n"
+                        "  At instruction index" CYAN " %zu " RESET "(command '{}')\n"
+                        "  Found character:" RED " '%c' " RESET "(expected '=', '<' or '>')\n",
+                        pc, op
+                    );
+                    exit(1);
+                }
+                break;
+
             case '[':
                 if (memory[ptr] == 0) {
                     pc = search_for_endloop(code.data, code_len, pc);
@@ -296,9 +408,49 @@ void interprete(vector_char code, int num_of_regs) {
                 }
                 break;
 
+            case ')':
+                break;
+
             case ';':
                 printf("\nProgram halted at index %zu.", pc);
                 pc = code_len;
+                break;
+
+            case 'd':
+                printf("\n\nDebugging info at instruction index %zu\n", pc);
+                printf("Memory: ");
+                for (size_t i = 0; i < num_of_regs - 1; i++) {
+                    printf("%d, ", memory[i]);
+                }
+                printf("%d\n", memory[num_of_regs - 1]);
+                printf("Pointer: %zu\n", ptr);
+                printf("Stack: ");
+                if (stack.size > 0) {
+                    for (size_t i = 0; i < stack.size - 1; i++) {
+                        printf("%d, ", stack.data[i]);
+                    }
+                    printf("%d\n", stack.data[stack.size - 1]);
+                } else {
+                    printf("empty\n");
+                }
+                printf("Index memory: ");
+                if (index_memory.size > 0) {
+                    for (size_t i = 0; i < index_memory.size - 1; i++) {
+                        printf("%d, ", index_memory.data[i]);
+                    }
+                    printf("%d\n", index_memory.data[index_memory.size - 1]);
+                } else {
+                    printf("empty\n");
+                }
+                printf("Loop stack: ");
+                if (loop_stack.size > 0) {
+                    for (size_t i = 0; i < loop_stack.size - 1; i++) {
+                        printf("%d, ", loop_stack.data[i]);
+                    }
+                    printf("%d\n", loop_stack.data[index_memory.size - 1]);
+                } else {
+                    printf("empty\n");
+                }
                 break;
 
             default:
@@ -324,6 +476,7 @@ void interprete(vector_char code, int num_of_regs) {
     } else {
         printf("empty\n");
     }
+    free(stack.data);
     printf("Index memory: ");
     if (index_memory.size > 0) {
         for (size_t i = 0; i < index_memory.size - 1; i++) {
@@ -333,6 +486,7 @@ void interprete(vector_char code, int num_of_regs) {
     } else {
         printf("empty\n");
     }
+    free(index_memory.data);
     printf("Press any key to continue...");
     getch();
 }
