@@ -61,12 +61,19 @@ int main(int argc, char* argv[]) {
     int curr_ch;
     vector_char code = make_vector_char(50);
     size_t code_len = 0;
+    char prev = 0;
+    // Reads file but removes comments and whitespaces
     while ((curr_ch = fgetc(file)) != EOF) {
-        // only add valid minez chars
-        if (curr_ch == '>' || curr_ch == '<' || curr_ch == '+' || curr_ch == '-' || curr_ch == '[' || curr_ch == ']' || curr_ch == '~' || curr_ch == '.' || curr_ch == ':' || curr_ch == '#' || curr_ch == '!' || curr_ch == '0' || curr_ch == '1' || curr_ch == '2' || curr_ch == '3' || curr_ch == '4' || curr_ch == '5' || curr_ch == '6' || curr_ch == '7' || curr_ch == '8' || curr_ch == '9' || curr_ch == '{' || curr_ch == '}' || curr_ch == '(' || curr_ch == ')' || curr_ch == 'd' || curr_ch == 's' || curr_ch == 'x' || curr_ch == 'X' || curr_ch == '^' || curr_ch == '@' || curr_ch == '_' || curr_ch == '=' || curr_ch == 'i' || curr_ch == '|' || curr_ch == ';') {
-            vector_char_push(&code, (char)curr_ch);
+        if (prev == '/' && curr_ch == '/') {
+            while ((curr_ch = fgetc(file)) != '\n' && curr_ch != EOF);
+            prev = 0;
+        } else {
+            if (prev && !(prev == '\n' || prev == '\t' || prev == ' ')) vector_char_push(&code, prev);
+            if (curr_ch != '/' && !(curr_ch == '\n' || curr_ch == '\t' || curr_ch == ' ')) vector_char_push(&code, (char)curr_ch);
+            prev = curr_ch == '/' ? curr_ch : 0;
         }
     }
+    if (prev) vector_char_push(&code, prev);
     fclose(file);
     
     if (code.data[code.size-1] != ';') {
