@@ -5,6 +5,7 @@
         "getch.h": "c",
         "conio.h": "c",
         "helper_functions.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "stdio.h": "c"
     }
 }

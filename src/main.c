@@ -10,6 +10,7 @@
 // Project headers
 #include "../include/minez_docs.h"
 #include "../include/interpreter.h"
+#include "../include/compiler.h"
 #include "../include/vectors.h"
 
 int main(int argc, char* argv[]) {
@@ -23,6 +24,7 @@ int main(int argc, char* argv[]) {
     bool hide_input_prompts = false;
     int num_of_regs = 100;
     bool docs = false;
+    char* compile_target = NULL;
 
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--docs") == 0) {
@@ -32,6 +34,13 @@ int main(int argc, char* argv[]) {
                 num_of_regs = atoi(argv[++i]);
             } else {
                 fprintf(stderr, "Error: --num-of-regs expects a number\n");
+                return 1;
+            }
+        } else if (strcmp(argv[i], "--compile") == 0) {
+            if (i + 1 < argc) {
+                compile_target = argv[++i];
+            } else {
+                fprintf(stderr, "Error: --compile expects a filename <target>\n");
                 return 1;
             }
         } else if (argv[i][0] != '-') {
@@ -48,7 +57,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (file_name == NULL) {
-        fprintf(stderr, "Fatal error: missing one required argument 'file_name' (required when not using '--docs').");
+        fprintf(stderr, "Fatal error: missing one required argument 'source_file' (required when not using '--docs').");
         return 1;
     }
 
@@ -80,7 +89,11 @@ int main(int argc, char* argv[]) {
         vector_char_push(&code, ';');
     }
 
-    interprete(code, num_of_regs);
+    if (compile_target == NULL) {
+        interprete(code, num_of_regs);
+    } else {
+        compile(code, compile_target);
+    }
 
     free(code.data);
     return 0;
