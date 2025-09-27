@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <sys/time.h>
 #include "../include/utils.h"
 
 #define BOLD "\033[1m"
@@ -53,4 +54,10 @@ size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
     }
     fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%u" RESET ": Missing closing bracket ']'.", pc);
     exit(1);
+}
+
+double get_time_sec() {
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    return t.tv_sec + t.tv_usec / 1e6;
 }

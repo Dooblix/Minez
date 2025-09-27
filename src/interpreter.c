@@ -27,6 +27,7 @@ void interprete(vector_char code, int num_of_regs) {
     vector_size_t index_memory = make_vector_size_t(1);
     vector_size_t loop_stack = make_vector_size_t(1);
 
+    double start = get_time_sec();
     while (pc < code_len) {
         char cmd = code.data[pc];
         switch (cmd) {
@@ -412,6 +413,8 @@ void interprete(vector_char code, int num_of_regs) {
         }
         pc++;
     }
+    double end = get_time_sec();
+    double runtime = end - start;
     free(loop_stack.data);
     printf("\n\nProgram ended successfully!\n");
     printf("Memory: ");
@@ -440,6 +443,7 @@ void interprete(vector_char code, int num_of_regs) {
         printf("empty\n");
     }
     free(index_memory.data);
+    printf("Runtime: %.6f sec\n", runtime);
     printf("Press any key to continue...");
     getch();
 }
