@@ -237,7 +237,7 @@ void interprete(vector_char code, int num_of_regs) {
                             "\n"
                             "Hint: Increase the number of available memory cells:\n"
                             "  minez <file> --num-of-regs" GREEN " %zu " RESET "<-- HERE\n",
-                            pc, ptr, num_of_regs, ptr+1
+                            pc, reg1, num_of_regs, reg1+1
                         );
                         exit(1);
                     }
@@ -265,7 +265,7 @@ void interprete(vector_char code, int num_of_regs) {
                             "\n"
                             "Hint: Increase the number of available memory cells:\n"
                             "  minez <file> --num-of-regs" GREEN " %zu " RESET "<-- HERE\n",
-                            pc, ptr, num_of_regs, ptr+1
+                            pc, reg2, num_of_regs, reg2+1
                         );
                         exit(1);
                     }

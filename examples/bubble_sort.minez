@@ -1,0 +1,33 @@
+// Bubble sort in Minez
+// needs at least 5+list_length memory cells
+
+// Input prompt
++76#+25#+9#-7#+13#-12#-72#+79#-9#-70#+89#-10#+6#-3#-82#+76#-3#+10#+1#-58#-26#
+x:@>_-1@ // save later used counter in r1
+>4|>0[->X>:|>0-]X // input loop
+>4|>0_
+[   
+    {2=0}( // leave loop if r2 (swapped_flag) is zero (r0 is zero after each iteration)
+        >0~
+    )
+    X
+    >4||
+    >2x>1@>0x_ // reset swapped_flag and counter
+    [
+        ->X>@|>@ // save currently relevant elements in stack
+        >4_<_ // copy them to comparison regs (r4, r3)
+        {4<3}( // if the right element is smaller than the left
+            @>@>2+ // save them to stack
+            ->x_>x_ // clear the relevant elements and copy r3 and r4 accordingly
+        )
+        >4x<x // reset r4 and r3
+        >0-
+    ]
+    X
+    >1
+]
+>2+32>+44 // ASCII: r2 -> space, r3 -> ','
+[
+    ->X>|#!>3#<#>1- // print out each element except the last one
+]
+->X>#!; // print the last one withou ', '

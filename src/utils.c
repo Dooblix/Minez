@@ -54,19 +54,3 @@ size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
     fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%u" RESET ": Missing closing bracket ']'.", pc);
     exit(1);
 }
-
-int* closest_factors(int x) {
-    int res[3];
-    if (x == 0) {
-        res[0] = 0;
-        res[1] = 0;
-        res[2] = 0;
-        return res;
-    } else if (x <= 10) {
-        res[0] = x;
-        res[1] = 1;
-        res[2] = 0;
-        return res;
-    }
-    return res;
-}

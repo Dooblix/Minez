@@ -1,0 +1,5 @@
+// Fibonacci numbers in Minez
+// needs at least 49 memory cells
++32>+44 // can't go higher due to 32-Bit limit
+>+1#!>0#>>>+1#!>|>0#>1
+[->X<@>_<<@>>_#!>|>0#>1-];
