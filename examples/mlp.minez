@@ -1,8 +1,8 @@
 // MNIST-MLP in Minez (holy shit)
 // needs at least 26285 memory cells
-// biases start at metadata+784
-// weights_inp_hidden start at metadata+826
-// weights_hidden_out start at metadata+25914
+// biases start at 835
+// weights_inp_hidden start at 877
+// weights_hidden_out start at 25965
 
 -1>>+28>+32>+68#+46#-17#+22#-87#+65#-65#+68#+5#-2#+2#+11#-84#+16#-3#+12#-25#+8#+8#+10#-26#+87#-15#+1#+11#-15#-69#+80#-7#+15#-19#+7#-64#-12#+17#+9#-26#+66#+10#-11#+2#+8#-75#+80#-7#+15#-19#+7#-67#+17#-48#
 >51|>4[>0+{0=2}(>4#>1+>0x){1=2}(>0#x>x>x>x~)->X.-48>|>3#]>0x
@@ -76,7 +76,7 @@
     >4+
 ]
 >40@|>0_>x+>-
-[->X>|{i>0}(@>0x_>1@>3x_)>1+>-]
+[->X>|{i>0}(@>0x_>1@>3x_)>1+>-] // argmax algorithm
 >0x+80#+34#-13#-1#+5#-6#+17#-11#+6#-1#-52#-26#
 >3#!
 ;
