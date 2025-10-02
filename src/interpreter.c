@@ -17,7 +17,7 @@
 #define GREEN "\033[32m"
 #define RESET "\033[0m"
 
-void interprete(vector_char code, int num_of_regs) {
+void interprete(vector_char code, int num_of_regs, size_t print_until) {
 
     size_t code_len = code.size;
     size_t pc = 0;
@@ -373,10 +373,14 @@ void interprete(vector_char code, int num_of_regs) {
             case 'd':
                 printf("\n\nDebugging info at instruction index %zu\n", pc);
                 printf("Memory: ");
-                for (size_t i = 0; i < num_of_regs - 1; i++) {
+                for (size_t i = 0; i < print_until - 1; i++) {
                     printf("%d, ", memory[i]);
                 }
-                printf("%d\n", memory[num_of_regs - 1]);
+                printf("%d", memory[print_until - 1]);
+                if (print_until < num_of_regs) {
+                    printf(" . . .");
+                }
+                printf("\n");
                 printf("Pointer: %zu\n", ptr);
                 printf("Stack: ");
                 if (stack.size > 0) {
@@ -418,10 +422,14 @@ void interprete(vector_char code, int num_of_regs) {
     free(loop_stack.data);
     printf("\n\nProgram ended successfully!\n");
     printf("Memory: ");
-    for (size_t i = 0; i < num_of_regs - 1; i++) {
+    for (size_t i = 0; i < print_until - 1; i++) {
         printf("%d, ", memory[i]);
     }
-    printf("%d\n", memory[num_of_regs - 1]);
+    printf("%d", memory[print_until - 1]);
+    if (print_until < num_of_regs) {
+        printf(" . . .");
+    }
+    printf("\n");
     printf("Pointer: %zu\n", ptr);
     printf("Stack: ");
     if (stack.size > 0) {

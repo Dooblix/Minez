@@ -22,6 +22,8 @@ int main(int argc, char* argv[]) {
     char* file_name = NULL;
     bool hide_input_prompts = false;
     int num_of_regs = 100;
+    size_t print_until = 100;
+    bool print_until_used = false;
     bool docs = false;
     char* compile_target = NULL;
 
@@ -35,12 +37,28 @@ int main(int argc, char* argv[]) {
                 fprintf(stderr, "Error: --num-of-regs expects a number\n");
                 return 1;
             }
+        } else if (strcmp(argv[i], "--print-until") == 0) {
+                if (i + 1 < argc) {
+                print_until = atoi(argv[++i]);
+                if (print_until > num_of_regs) {
+                    fprintf(stderr, "Error: --print-until has to be smaller than num_of_regs.\n");
+                    return 1;
+                }
+                print_until_used = true;
+            } else {
+                fprintf(stderr, "Error: --print-until expects a number\n");
+                return 1;
+            }
         } else if (argv[i][0] != '-') {
             file_name = argv[i];
         } else {
             fprintf(stderr, "Unknown argument: %s\n", argv[i]);
             return 1;
         }
+    }
+
+    if (!print_until_used) {
+        print_until = num_of_regs;
     }
 
     if (docs) {
@@ -81,7 +99,7 @@ int main(int argc, char* argv[]) {
         vector_char_push(&code, ';');
     }
 
-    interprete(code, num_of_regs);
+    interprete(code, num_of_regs, print_until);
 
     free(code.data);
     return 0;

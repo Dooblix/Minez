@@ -1,0 +1,4 @@
+// This program is a calculator made in the early versions of Minez. It has no input prompts. 
+// Expects: Num1, op (+/-), Num2
+// Needs at least 5 memory cells
++43>1+45>2:>3.>4:{3=0}(>0[>4+1>2-1]>4#!;){3=1}(>0[>2-1>4-1]>2#!;)>5+85#+25#-7#+149#-144#+8#-11#-2#;

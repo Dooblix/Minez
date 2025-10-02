@@ -30,4 +30,4 @@ x:@>_-1@ // save later used counter in r1
 [
     ->X>|#!>3#<#>1- // print out each element except the last one
 ]
-->X>#!; // print the last one withou ', '
+->X>#!; // print the last one without ', '
