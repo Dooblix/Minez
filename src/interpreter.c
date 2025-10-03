@@ -69,6 +69,9 @@ void interprete(vector_char code, int num_of_regs, size_t print_until) {
             case '+':
                 if (isdigit(code.data[pc + 1])) {
                     memory[ptr] += extract_number(code.data, code_len, &pc);
+                } else if (code.data[pc + 1] == 'R') {
+                    memory[ptr] += runtime_mz(start);
+                    pc++;
                 } else {
                     memory[ptr]++;
                 }
@@ -116,6 +119,10 @@ void interprete(vector_char code, int num_of_regs, size_t print_until) {
                         );
                         exit(1);
                     }
+                } else if (code.data[pc + 1] == 'R') {
+                    memory[ptr] -= runtime_mz(start);
+                    pc++;
+                
                 } else {
                     memory[ptr]--;
                 }
@@ -209,7 +216,12 @@ void interprete(vector_char code, int num_of_regs, size_t print_until) {
                 break;
 
             case '@':
-                vector_int_push(&stack, memory[ptr]);
+                if (code.data[pc + 1] == 'R') {
+                    vector_int_push(&stack, runtime_mz(start));
+                    pc++;
+                } else {
+                    vector_int_push(&stack, memory[ptr]);
+                }
                 break;
 
             case '_':
@@ -366,6 +378,7 @@ void interprete(vector_char code, int num_of_regs, size_t print_until) {
                 break;
 
             case ';':
+                printf("\n-------------------------------------\n");
                 printf("\nProgram halted at index %zu.", pc);
                 pc = code_len;
                 break;
@@ -412,7 +425,7 @@ void interprete(vector_char code, int num_of_regs, size_t print_until) {
                 break;
 
             default:
-                fprintf(stderr, RED BOLD "\nError" RESET ": Unknown command '" RED "%c" RESET"' at index " CYAN "%d" RESET ".", code.data[pc], pc);
+                fprintf(stderr, RED BOLD "\nError" RESET ": Unknown command '" RED "%c" RESET"' at instruction index " CYAN "%d" RESET ".", code.data[pc], pc);
                 exit(1);
         }
         pc++;

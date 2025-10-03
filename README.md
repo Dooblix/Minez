@@ -9,7 +9,13 @@
 Download or clone the Minez repository to your desired location.
 
 *More instructions coming soon*
-     
+
+---
+
+## Usage
+
+*coming soon*
+
 ---
 
 ## Syntax Reference
@@ -39,17 +45,20 @@ Download or clone the Minez repository to your desired location.
 | Command | Description                                                           |
 | ------- | --------------------------------------------------------------------- |
 | `@`     | Push value of current register onto the stack.                        |
+| `@R`    | Push the current runtime (in ms) onto the stack.                      |
 | `_`     | Pop last value from the stack into the current register (additively). |
 
 ### Register Arithmetic
 
-| Command | Description                        |
-| ------- | ---------------------------------- |
-| `+y`    | Increment current register by `y`. |
-| `+`     | Increment current register by 1.   |
-| `-y`    | Decrement current register by `y`. |
-| `-`     | Decrement current register by 1.   |
-| `x`     | Reset current register to 0.       |
+| Command | Description                                                 |
+| ------- | ----------------------------------------------------------- |
+| `+y`    | Increment current register by `y`.                          |
+| `+R`    | Add current runtime (in ms) to the current register.        |
+| `+`     | Increment current register by 1.                            |
+| `-y`    | Decrement current register by `y`.                          |
+| `-R`    | Subtract current runtime (in ms) from the current register. |
+| `-`     | Decrement current register by 1.                            |
+| `x`     | Reset current register to 0.                                |
 
 ### Input/Output
 

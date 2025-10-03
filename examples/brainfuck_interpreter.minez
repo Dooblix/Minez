@@ -8,7 +8,7 @@
 //     4 - 11: bf chars comparison
 //     12: 255 constant comparison
 //     13: bf program length
-//     14: num_of_regs
+//     14: num_of_regs, later: runtime
 //     14+num_of_regs: start of brainfuck program
 // Index memory usage:
 //     0: start of program string
@@ -34,7 +34,7 @@
 >1x+69#+41#+6#-15#+13#-82#+34#+48#-17#+8#+5#-8#+15#-18#+8#-75#+80#+2#-3#-8#+11#-17#+12#-51#-26#
 >0+13
 ->>.>|<[->X.>|<{i=0}(>0x~)>13+]X>1x+10#
-
+>14x-R
 >13+
 [
     ->|>2@[->X>|>2-]x_->X> // go to current char
@@ -128,4 +128,8 @@
         x~
     )
     >0x>2+
-];
+]
+>1x+10#+56#+4#-25#+37#+35#-7#+6#-11#+4#-8#-43#-26#
+>14+R#!
+>1#+77#+6#
+;
