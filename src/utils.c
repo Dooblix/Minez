@@ -17,7 +17,9 @@ long extract_number(char* code, size_t code_len, size_t* pc) {
     }
     (*pc)--;
     vector_char_push(&result, '\0');
-    return strtol(result.data, NULL, 10);
+    long result_num = strtol(result.data, NULL, 10);
+    free(result.data);
+    return result_num;
 }
 
 size_t search_for_endif(char* code, size_t code_len, size_t pc) {
@@ -34,7 +36,7 @@ size_t search_for_endif(char* code, size_t code_len, size_t pc) {
         }
         endif++;
     }
-    fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%u" RESET ": Missing closing bracket ')'.", pc);
+    fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%zu" RESET ": Missing closing bracket ')'.", pc);
     exit(1);
 }
 
@@ -52,7 +54,7 @@ size_t search_for_endloop(char* code, size_t code_len, size_t pc) {
         }
         endloop++;
     }
-    fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%u" RESET ": Missing closing bracket ']'.", pc);
+    fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%zu" RESET ": Missing closing bracket ']'.", pc);
     exit(1);
 }
 

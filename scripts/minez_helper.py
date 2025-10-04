@@ -68,7 +68,7 @@ def main(argv=None) -> None:
     )
 
     parser.add_argument(
-        "-reg",
+        "--reg",
         type=int,
         default=1,
         help="String: printing host, List: start register (default: 1)"

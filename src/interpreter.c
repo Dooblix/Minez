@@ -17,7 +17,7 @@
 #define GREEN "\033[32m"
 #define RESET "\033[0m"
 
-void interprete(vector_char code, int num_of_regs, size_t print_until) {
+void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int print_intervalls, bool no_pause, bool quiet) {
 
     size_t code_len = code.size;
     size_t pc = 0;
@@ -378,12 +378,15 @@ void interprete(vector_char code, int num_of_regs, size_t print_until) {
                 break;
 
             case ';':
-                printf("\n-------------------------------------\n");
-                printf("\nProgram halted at index %zu.", pc);
+                if (!quiet) {
+                    printf("\n\n-------------------------------------\n");
+                    printf("\nProgram halted at index %zu.", pc);
+                }
                 pc = code_len;
                 break;
 
             case 'd':
+                if (quiet) break;
                 printf("\n\nDebugging info at instruction index %zu\n", pc);
                 printf("Memory: ");
                 for (size_t i = 0; i < print_until - 1; i++) {
@@ -418,7 +421,7 @@ void interprete(vector_char code, int num_of_regs, size_t print_until) {
                     for (size_t i = 0; i < loop_stack.size - 1; i++) {
                         printf("%d, ", loop_stack.data[i]);
                     }
-                    printf("%d\n", loop_stack.data[index_memory.size - 1]);
+                    printf("%d\n", loop_stack.data[loop_stack.size - 1]);
                 } else {
                     printf("empty\n");
                 }
@@ -432,39 +435,60 @@ void interprete(vector_char code, int num_of_regs, size_t print_until) {
     }
     double end = get_time_sec();
     double runtime = end - start;
+    if (!quiet) {
+        printf("\n\nProgram ended successfully!\n");
+        printf("Memory: ");
+        for (size_t i = 0; i < print_until - 1; i++) {
+            printf("%d, ", memory[i]);
+        }
+        printf("%d", memory[print_until - 1]);
+        if (print_until < num_of_regs) {
+            printf(" . . .");
+        }
+        printf("\n");
+        if (print_intervalls.size > 0) {
+            for (size_t i = 0; i < print_intervalls.size; i += 2) {
+                size_t start = print_intervalls.data[i];
+                size_t end = print_intervalls.data[i + 1];
+                if (start > end) {
+                    printf("Invalid interval %zu, %zu\n", start, end);
+                    continue;
+                }
+                printf("Interval %zu, %zu: ", start, end);
+                for (size_t j = start; j <= end; j++) {
+                    printf("%d", memory[j]);
+                    if (j != end) printf(", ");
+                }
+                printf("\n");
+            }
+        }
+        printf("Pointer: %zu\n", ptr);
+        printf("Stack: ");
+        if (stack.size > 0) {
+            for (size_t i = 0; i < stack.size - 1; i++) {
+                printf("%d, ", stack.data[i]);
+            }
+            printf("%d\n", stack.data[stack.size - 1]);
+        } else {
+            printf("empty\n");
+        }
+        printf("Index memory: ");
+        if (index_memory.size > 0) {
+            for (size_t i = 0; i < index_memory.size - 1; i++) {
+                printf("%d, ", index_memory.data[i]);
+            }
+            printf("%d\n", index_memory.data[index_memory.size - 1]);
+        } else {
+            printf("empty\n");
+        }
+        printf("Runtime: %.6f sec\n", runtime);
+        if (!no_pause) {
+            printf("Press any key to continue...");
+            getch();
+        }
+    }
     free(loop_stack.data);
-    printf("\n\nProgram ended successfully!\n");
-    printf("Memory: ");
-    for (size_t i = 0; i < print_until - 1; i++) {
-        printf("%d, ", memory[i]);
-    }
-    printf("%d", memory[print_until - 1]);
-    if (print_until < num_of_regs) {
-        printf(" . . .");
-    }
-    printf("\n");
-    printf("Pointer: %zu\n", ptr);
-    printf("Stack: ");
-    if (stack.size > 0) {
-        for (size_t i = 0; i < stack.size - 1; i++) {
-            printf("%d, ", stack.data[i]);
-        }
-        printf("%d\n", stack.data[stack.size - 1]);
-    } else {
-        printf("empty\n");
-    }
+    free(memory);
     free(stack.data);
-    printf("Index memory: ");
-    if (index_memory.size > 0) {
-        for (size_t i = 0; i < index_memory.size - 1; i++) {
-            printf("%d, ", index_memory.data[i]);
-        }
-        printf("%d\n", index_memory.data[index_memory.size - 1]);
-    } else {
-        printf("empty\n");
-    }
     free(index_memory.data);
-    printf("Runtime: %.6f sec\n", runtime);
-    printf("Press any key to continue...");
-    getch();
 }

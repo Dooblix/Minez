@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 // Project headers
 #include "../include/minez_docs.h"
 #include "../include/interpreter.h"
@@ -20,16 +21,19 @@ int main(int argc, char* argv[]) {
     }
 
     char* file_name = NULL;
-    bool hide_input_prompts = false;
+    bool no_pause = false;
     int num_of_regs = 100;
     size_t print_until = 100;
     bool print_until_used = false;
+    vector_int print_intervalls = make_vector_int(2);
     bool docs = false;
-    char* compile_target = NULL;
+    bool quiet = false;
 
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--docs") == 0) {
+        if (strcmp(argv[i], "--docs") == 0 || strcmp(argv[i], "-d") == 0) {
             docs = true;
+        } else  if(strcmp(argv[i], "--quiet") == 0 || strcmp(argv[i], "-q") == 0) {
+            quiet = true;
         } else if (strcmp(argv[i], "--num-of-regs") == 0) {
             if (i + 1 < argc) {
                 num_of_regs = atoi(argv[++i]);
@@ -38,7 +42,7 @@ int main(int argc, char* argv[]) {
                 return 1;
             }
         } else if (strcmp(argv[i], "--print-until") == 0) {
-                if (i + 1 < argc) {
+            if (i + 1 < argc) {
                 print_until = atoi(argv[++i]);
                 if (print_until > num_of_regs) {
                     fprintf(stderr, "Error: --print-until has to be smaller than num_of_regs.\n");
@@ -49,6 +53,16 @@ int main(int argc, char* argv[]) {
                 fprintf(stderr, "Error: --print-until expects a number\n");
                 return 1;
             }
+        } else if (strcmp(argv[i], "--print-intervalls") == 0) {
+            while (i + 1 < argc && argv[i+1][0] != '-') {
+                vector_int_push(&print_intervalls, atoi(argv[++i]));
+            }
+            if (print_intervalls.size % 2 != 0) {
+                fprintf(stderr, "Error: --print-intervalls expects a list of integers with an even size!");
+                return 1;
+            }
+        } else if (strcmp(argv[i], "--no-pause") == 0) {
+            no_pause = true;
         } else if (argv[i][0] != '-') {
             file_name = argv[i];
         } else {
@@ -95,12 +109,13 @@ int main(int argc, char* argv[]) {
     if (prev) vector_char_push(&code, prev);
     fclose(file);
     
-    if (code.data[code.size-1] != ';') {
+    if (code.size == 0 || code.data[code.size-1] != ';') {
         vector_char_push(&code, ';');
     }
 
-    interprete(code, num_of_regs, print_until);
+    interpret(code, num_of_regs, print_until, print_intervalls, no_pause, quiet);
 
     free(code.data);
+    free(print_intervalls.data);
     return 0;
 }

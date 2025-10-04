@@ -15,7 +15,7 @@ typedef struct {
 } vector_int;
 
 typedef struct {
-    char* data;
+    unsigned char* data;
     size_t size;
     size_t capacity;
 } vector_char;
