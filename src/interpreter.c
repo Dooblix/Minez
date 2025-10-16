@@ -520,6 +520,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
         if (!no_pause) {
             printf("Press any key to continue...");
             getch();
+            printf("\n");
         }
     }
     free(loop_stack.data);
