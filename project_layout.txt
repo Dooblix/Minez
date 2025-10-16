@@ -1,6 +1,7 @@
 minez
-├── build
-    └── minez.exe
+├── bin
+    ├── minez-linux
+    └── minez-windows.exe
 ├── examples
     ├── brainfuck_interpreter.minez
     ├── bubble_sort.minez
