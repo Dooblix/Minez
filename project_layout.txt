@@ -25,4 +25,5 @@ minez
     └── vectors.c
 ├── .gitignore
 ├── LICENSE
+├── project_layout.txt
 └── README.md
