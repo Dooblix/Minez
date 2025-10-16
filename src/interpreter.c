@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "../include/getch.h"
 #include "../include/vectors.h"
@@ -17,8 +18,10 @@
 #define GREEN "\033[32m"
 #define RESET "\033[0m"
 
-void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int print_intervalls, bool no_pause, bool quiet) {
+void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int print_intervalls, char* pre_input, bool no_pause, bool quiet) {
 
+    size_t pre_input_idx = 0;
+    size_t pre_input_len = pre_input ? strlen(pre_input) : 0;
     size_t code_len = code.size;
     size_t pc = 0;
     int* memory = calloc(num_of_regs, sizeof(int));
@@ -185,7 +188,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                 if (memory[ptr] < 0 || memory[ptr] > 255) {
                     fprintf(stderr,
                         RED BOLD "\nValueError" RESET ": cannot print cell value\n"
-                        "  At instruction index" CYAN " %zu " RESET "(command '.'):\n"
+                        "  At instruction index" CYAN " %zu " RESET "(command '#'):\n"
                         "  Cell[" CYAN "%zu" RESET "] =" RED " %d " RESET"(valid range: " GREEN "0-255" RESET ")\n",
                         pc, ptr, memory[ptr]
                     );
@@ -195,23 +198,53 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                 break;
 
             case '.':
-                int inp = getch();
+                int inp;
+                if (pre_input) {
+                    if (pre_input_idx >= pre_input_len) {
+                        fprintf(stderr,
+                            RED BOLD "\nIndexError" RESET ": pre-input index out of bounds\n"
+                            "  At instruction index" CYAN " %zu " RESET "(command '.'):\n"
+                            "  Provided pre-input string length: %d\n",
+                            pc, pre_input_len
+                        );
+                        exit(1);
+                    }
+                    inp = pre_input[pre_input_idx++];
+                } else {
+                    inp = getch();
+                }
                 printf("%c", inp);
                 memory[ptr] = (unsigned char)inp;
                 break;
 
             case ':':
                 int input;
-                if (scanf("%d", &input) == 1) {
+                if (pre_input) {
+                    if (pre_input_idx >= pre_input_len) {
+                        fprintf(stderr,
+                            RED BOLD "\nIndexError" RESET ": pre-input index out of bounds\n"
+                            "  At instruction index" CYAN " %zu " RESET "(command ':'):\n"
+                            "  Provided pre-input string length: %d\n",
+                            pc, pre_input_len
+                        );
+                        exit(1);
+                    }
+                    input = extract_number_pre_input(pre_input, pre_input_len, &pre_input_idx);
+                    printf("%d\n", input);
+                    pre_input_idx++;
                     memory[ptr] = input;
                 } else {
-                    fprintf(stderr,
-                            RED BOLD "\nInputError" RESET ": expected an integer.\n"
-                            "  At instuction index " CYAN "%zu" RESET " (command ':'):\n"
-                            "  Provided input is not a valid integer.\n",
-                            pc
-                    );
-                    exit(1);
+                    if (scanf("%d", &input) == 1) {
+                        memory[ptr] = input;
+                    } else {
+                        fprintf(stderr,
+                                RED BOLD "\nInputError" RESET ": expected an integer.\n"
+                                "  At instuction index " CYAN "%zu" RESET " (command ':'):\n"
+                                "  Provided input is not a valid integer.\n",
+                                pc
+                        );
+                        exit(1);
+                    }
                 }
                 break;
 
@@ -410,18 +443,18 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                 printf("Index memory: ");
                 if (index_memory.size > 0) {
                     for (size_t i = 0; i < index_memory.size - 1; i++) {
-                        printf("%d, ", index_memory.data[i]);
+                        printf("%zu, ", index_memory.data[i]);
                     }
-                    printf("%d\n", index_memory.data[index_memory.size - 1]);
+                    printf("%zu\n", index_memory.data[index_memory.size - 1]);
                 } else {
                     printf("empty\n");
                 }
                 printf("Loop stack: ");
                 if (loop_stack.size > 0) {
                     for (size_t i = 0; i < loop_stack.size - 1; i++) {
-                        printf("%d, ", loop_stack.data[i]);
+                        printf("%zu, ", loop_stack.data[i]);
                     }
-                    printf("%d\n", loop_stack.data[loop_stack.size - 1]);
+                    printf("%zu\n", loop_stack.data[loop_stack.size - 1]);
                 } else {
                     printf("empty\n");
                 }
@@ -475,9 +508,9 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
         printf("Index memory: ");
         if (index_memory.size > 0) {
             for (size_t i = 0; i < index_memory.size - 1; i++) {
-                printf("%d, ", index_memory.data[i]);
+                printf("%zu, ", index_memory.data[i]);
             }
-            printf("%d\n", index_memory.data[index_memory.size - 1]);
+            printf("%zu\n", index_memory.data[index_memory.size - 1]);
         } else {
             printf("empty\n");
         }

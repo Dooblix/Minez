@@ -1,0 +1,28 @@
+minez
+├── build
+    └── minez.exe
+├── examples
+    ├── brainfuck_interpreter.minez
+    ├── bubble_sort.minez
+    ├── calc.minez
+    ├── early_calc.minez
+    ├── fibonacci.minez
+    ├── hello_world.minez
+    └── mlp.minez
+├── include
+    ├── getch.h
+    ├── interpreter.h
+    ├── minez_docs.h
+    ├── utils.h
+    └── vectors.h
+├── scripts
+    └── minez_helper.py
+├── src
+    ├── interpreter.c
+    ├── main.c
+    ├── minez_docs.c
+    ├── utils.c
+    └── vectors.c
+├── .gitignore
+├── LICENSE
+└── README.md

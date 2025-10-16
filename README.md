@@ -88,7 +88,7 @@ If the documentation message appears, the interpreter has been successfully comp
 Run a Minez program with:
 
 ```bash
-./minez.exe <path-to-program> [-d] [--docs] [-q] [--quiet] [--num-of-regs N] [--print-until N] [--print-intervalls A B ...] [--no-pause]
+./minez <path-to-program> [-d] [--docs] [-q] [--quiet] [--num-of-regs N] [--print-until N] [--print-intervalls A B ...] [--pre-input ""] [--no-pause]
 ```
 
 Options:
@@ -96,6 +96,7 @@ Options:
 * `--num-of-regs N` — Number of registers to allocate (default: 100).  
 * `--print-until N` — Number of memory cells to display after program ends and when using `d` (default: num_of_regs).  
 * `--print-intervalls A B ...` — Print memory contents in specified intervals. Each interval is a pair of indices `A B`. Multiple intervals can be provided. Must have an even number of integers.
+* `--pre-input ""` — Allows the user to provide input values that the program uses before execution. Each input integer must be separated by a delimiter. Any character can be used as a delimiter, but '\n' is recommended for readability. The length of the pre-input string must match the number of inputs the program expects. (Example: ```.\build\minez.exe examples\calc.minez --pre-input "234\n/-34\n"```)
 * `--no-pause` — Do not wait for keypress after program ends.
 * `--quiet`/`-q` — Disables all printing of metadata and debugger (`d`) commands.
 * `--docs`/`-d` — Prints a shortened version of this README.

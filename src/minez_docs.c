@@ -43,7 +43,7 @@ void table(const char* commands[][2], int n) {
 void print_docs() {
     printf("%sMinez (2025) - Esoteric Language inspired by Brainfuck%s\n", BOLD, RESET);
     printf("%sQuick Usage:%s ./minez.exe <program.minez> [options]\n", YELLOW, RESET);
-    printf("%sOptions:%s --num-of-regs N, --print-until N, --print-intervalls A B ..., --quiet/-q, --docs/-d, --no-pause\n\n", YELLOW, RESET);
+    printf("%sOptions:%s --num-of-regs N, --print-until N, --print-intervalls A B ..., --pre-input \"\", --quiet/-q, --docs/-d, --no-pause\n\n", YELLOW, RESET);
 
     // Pointer
     const char* pointer_ops[][2] = {

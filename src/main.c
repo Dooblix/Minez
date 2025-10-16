@@ -12,6 +12,7 @@
 #include "../include/minez_docs.h"
 #include "../include/interpreter.h"
 #include "../include/vectors.h"
+#include "../include/utils.h"
 
 int main(int argc, char* argv[]) {
 
@@ -26,6 +27,7 @@ int main(int argc, char* argv[]) {
     size_t print_until = 100;
     bool print_until_used = false;
     vector_int print_intervalls = make_vector_int(2);
+    char* pre_input = NULL;
     bool docs = false;
     bool quiet = false;
 
@@ -63,6 +65,13 @@ int main(int argc, char* argv[]) {
             }
         } else if (strcmp(argv[i], "--no-pause") == 0) {
             no_pause = true;
+        } else if (strcmp(argv[i], "--pre-input") == 0) {
+            if (i + 1 < argc) {
+                pre_input = argv[++i];
+            } else {
+                fprintf(stderr, "Error: --pre-input expects a string!");
+                return 1;
+            }
         } else if (argv[i][0] != '-') {
             file_name = argv[i];
         } else {
@@ -95,7 +104,7 @@ int main(int argc, char* argv[]) {
     vector_char code = make_vector_char(50);
     size_t code_len = 0;
     char prev = 0;
-    // Reads file but removes comments and whitespaces
+    // Reads file; removes comments and whitespaces
     while ((curr_ch = fgetc(file)) != EOF) {
         if (prev == '/' && curr_ch == '/') {
             while ((curr_ch = fgetc(file)) != '\n' && curr_ch != EOF);
@@ -112,8 +121,8 @@ int main(int argc, char* argv[]) {
     if (code.size == 0 || code.data[code.size-1] != ';') {
         vector_char_push(&code, ';');
     }
-
-    interpret(code, num_of_regs, print_until, print_intervalls, no_pause, quiet);
+    
+    interpret(code, num_of_regs, print_until, print_intervalls, parse_pre_input(pre_input), no_pause, quiet);
 
     free(code.data);
     free(print_intervalls.data);

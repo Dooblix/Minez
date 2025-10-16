@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <sys/time.h>
+#include <stdbool.h>
+#include <string.h>
+
 #include "../include/utils.h"
+#include "../include/vectors.h"
 
 #define BOLD "\033[1m"
 #define CYAN "\033[36m"
@@ -20,6 +24,23 @@ long extract_number(char* code, size_t code_len, size_t* pc) {
     long result_num = strtol(result.data, NULL, 10);
     free(result.data);
     return result_num;
+}
+
+long extract_number_pre_input(char* text, size_t length, size_t* idx) {
+    bool negative = false;
+    if (text[*idx] == '-') {
+        negative = true;
+        (*idx)++;
+    }
+    vector_char result = make_vector_char(1);
+    while (*idx < length && isdigit((unsigned char)text[*idx])) {
+        vector_char_push(&result, text[*idx]);
+        (*idx)++;
+    }
+    vector_char_push(&result, '\0');
+    long result_num = strtol(result.data, NULL, 10);
+    free(result.data);
+    return negative ? -result_num : result_num;
 }
 
 size_t search_for_endif(char* code, size_t code_len, size_t pc) {
@@ -62,4 +83,30 @@ double get_time_sec() {
     struct timeval t;
     gettimeofday(&t, NULL);
     return t.tv_sec + t.tv_usec / 1e6;
+}
+
+char* parse_pre_input(char* pre_input) {
+    if (!pre_input) return NULL;
+    size_t pre_input_len = strlen(pre_input);
+    size_t result_idx = 0;
+    char* result = malloc((pre_input_len + 1) * sizeof(char));
+
+    for (size_t i = 0; i < pre_input_len; i++) {
+        if (pre_input[i] == '\\' && i + 1 < pre_input_len) {
+            i++;
+            if (pre_input[i] == 'n') {
+                result[result_idx++] = '\n';
+            } else if (pre_input[i] == 't') {
+                result[result_idx++] = '\t';
+            } else if (pre_input[i] == 'r') {
+                result[result_idx++] = '\r';
+            } else {
+                result[result_idx++] = pre_input[i];
+            }
+        } else {
+            result[result_idx++] = pre_input[i];
+        }
+    }
+    result[result_idx] = '\0';
+    return result;
 }
