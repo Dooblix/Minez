@@ -160,7 +160,8 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     fprintf(stderr,
                         RED BOLD "SyntaxError" RESET ": missing parameter for '^'.\n"
                         "  At instruction index" CYAN " %zu " RESET ":\n"
-                        "  '^' has to be followed by an unsigned integer or 's'.\n"
+                        "  '^' has to be followed by an unsigned integer or 's'.\n",
+                        pc
                     );
                     exit(1);
                 }
@@ -461,7 +462,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                 break;
 
             default:
-                fprintf(stderr, RED BOLD "\nError" RESET ": Unknown command '" RED "%c" RESET"' at instruction index " CYAN "%d" RESET ".", code.data[pc], pc);
+                fprintf(stderr, RED BOLD "\nError" RESET ": Unknown command '" RED "%c" RESET"' at instruction index " CYAN "%zu" RESET ".", code.data[pc], pc);
                 exit(1);
         }
         pc++;
