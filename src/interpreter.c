@@ -237,7 +237,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                 } else {
                     if (scanf("%d", &input) == 1) {
                         memory[ptr] = input;
-                        scanf("%d*c", &input);
+                        int leftover = getchar();
                     } else {
                         fprintf(stderr,
                                 RED BOLD "\nInputError" RESET ": expected an integer.\n"
