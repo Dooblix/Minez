@@ -204,7 +204,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         fprintf(stderr,
                             RED BOLD "\nIndexError" RESET ": pre-input index out of bounds\n"
                             "  At instruction index" CYAN " %zu " RESET "(command '.'):\n"
-                            "  Provided pre-input string length: %d\n",
+                            "  Provided pre-input string length: %zu\n",
                             pc, pre_input_len
                         );
                         exit(1);
@@ -224,7 +224,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         fprintf(stderr,
                             RED BOLD "\nIndexError" RESET ": pre-input index out of bounds\n"
                             "  At instruction index" CYAN " %zu " RESET "(command ':'):\n"
-                            "  Provided pre-input string length: %d\n",
+                            "  Provided pre-input string length: %zu\n",
                             pc, pre_input_len
                         );
                         exit(1);
