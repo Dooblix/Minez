@@ -6,7 +6,7 @@
 
 ## Installation
 
-This guide explains how to compile the Minez interpreter on Windows and Linux.
+There are pre-compiled binaries in this repository, however if you do not trust these, the following guide will explain how to build the Minez interpreter from source.
 
 ---
 
@@ -37,6 +37,8 @@ cd minez
 ```bash
 cd minez
 ```
+
+Then delete the bin folder that contains the binary files.
 
 ---
 
@@ -213,7 +215,7 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 
 * Minez is experimental and intended for learning and experimentation.
 * Large programs or deep loops may significantly increase runtime.
-* Syntax errors (unmatched `]` or `)`) will terminate the program with a descriptive error.
+* Syntax errors (unmatched `]` or `)`) will terminate the program with a descriptive error message.
 
 ---
 
