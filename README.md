@@ -1,12 +1,12 @@
 # **Minez Documentation**
 
-**Minez** is an esoteric programming language created by *Dooblix* in 2024 (current version: 2025), designed to be a more accessible and powerful version of *Brainfuck*.
+**Minez** is an esoteric programming language created by *Dooblix* in 2024 (current version: 2025), designed to be a more accessible and powerful version of Urban Müller's minimalistic esoteric programming language "*Brainfuck*".
 
 ---
 
 ## Installation
 
-There are pre-compiled binaries in this repository, however if you do not trust these, the following guide will explain how to build the Minez interpreter from source.
+Pre-compiled binaries are provided. For those who prefer building from source, follow the steps below.
 
 ---
 
@@ -38,7 +38,7 @@ cd minez
 cd minez
 ```
 
-Then delete the bin folder that contains the binary files.
+Remove any existing pre-compiled binaries before building from source.
 
 ---
 
