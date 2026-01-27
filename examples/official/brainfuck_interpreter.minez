@@ -32,7 +32,7 @@
 
 // Brainfuck program input loop
 >1x+69#+41#+6#-15#+13#-82#+34#+48#-17#+8#+5#-8#+15#-18#+8#-75#+80#+2#-3#-8#+11#-17#+12#-51#-26#
->0+13 // NOTE: Change to +10 on Linux!
+>0+10 // NOTE: Change to +13 on Windows!
 ->>.>|<[->X.>|<{i=0}(>0x~)>13+]X>1x+10#
 >14x-R
 >13+
@@ -123,7 +123,7 @@
     {i=11}(
         >2x_~
     )
-    >0+13 // NOTE: Change to +10 on Linux!
+    >0+10 // NOTE: Change to +13 on Windows!
     {i=0}(
         x~
     )
