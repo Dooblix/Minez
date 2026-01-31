@@ -144,6 +144,7 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 ---
 
 ## Syntax Reference
+**Note:** This is a simplified summary. Refer to `spec.md` for the full specification.
 
 ### Pointer Manipulation
 
@@ -155,15 +156,15 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 
 ### Flow Control
 
-| Command | Description                                                                                 |
-| ------- | ------------------------------------------------------------------------------------------- |
-| `^y`    | Jump to program index `y`, saving pointer of the next command on the stack.                 |
-| `^s`    | Jump back to the last saved value on the stack.                                             |
-| `[`     | Begin loop (executes while current register ≠ 0). Skipped if register = 0.                  |
-| `~`     | Skip to next loop iteration (like `continue`).                                              |
-| `]`     | End loop (repeats if register ≠ 0).                                                         |
-| `{}`    | Conditional block: `{reg>reg}`, `{reg<reg}`, `{reg=reg}`. Use `i` for the current register. |
-| `;`     | End program.                                                                                |
+| Command | Description                                                                                   |
+| ------- | --------------------------------------------------------------------------------------------- |
+| `^y`    | Jump to program index `y`, saving pointer of the next command on the stack.                   |
+| `^s`    | Jump back to the last saved value on the stack.                                               |
+| `[`     | Begin loop (executes while current register ≠ 0). Skipped if register = 0.                    |
+| `~`     | Skip to next loop iteration (like `continue`).                                                |
+| `]`     | End loop (repeats if register ≠ 0).                                                           |
+| `{}(...)` | Conditional block: `{reg>reg}`, `{reg<reg}`, `{reg=reg}`. Use `i` for the current register. |
+| `;`     | End program.                                                                                  |
 
 ### Stack Operations
 
