@@ -156,7 +156,7 @@ This document specifies the runtime behavior of the Minez Virtual Machine as imp
 
 * Jump pointer to index_memory[y]
 * Valid only if `0 ≤ y < index_memory.size`
-* Otherwise: `IndexError`
+* Otherwise: `IndexError`, if `y < 0` → `SyntaxError`
 
 ---
 
@@ -265,7 +265,7 @@ Errors:
 #### `~`
 
 * Valid only inside a loop
-* Acts as `continue`, stops the loop if memory[ptr] = 0
+* Acts as `continue`, stops the loop if `memory[ptr] = 0`
 * Outside loop: `SyntaxError`
 
 ---
