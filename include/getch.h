@@ -1,6 +1,5 @@
 #ifndef GETCH_H
 #define GETCH_H
-#endif
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <conio.h>
@@ -28,4 +27,5 @@
         return ch;
     }
 
+#endif
 #endif

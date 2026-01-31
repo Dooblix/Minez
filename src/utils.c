@@ -1,3 +1,7 @@
+// utils.c
+// Copyright (c) 2026 Dooblix
+// Licensed under the MIT license. See LICENSE file for details.
+
 #include <stdio.h>
 #include <ctype.h>
 #include <sys/time.h>

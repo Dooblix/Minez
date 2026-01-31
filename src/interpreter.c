@@ -1,5 +1,5 @@
 // interpreter.c
-// Copyright (c) 2025 Dooblix
+// Copyright (c) 2026 Dooblix
 // Licensed under the MIT license. See LICENSE file for details.
 
 #include <stdio.h>
@@ -12,7 +12,7 @@
 #include "../include/vectors.h"
 #include "../include/utils.h"
 
-#define BOLD    "\033[1m"
+#define BOLD "\033[1m"
 #define CYAN "\033[36m"
 #define RED  "\033[31m"
 #define GREEN "\033[32m"
@@ -51,6 +51,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  minez <file> --num-of-regs" GREEN " %zu " RESET "<-- HERE\n",
                         pc, ptr, num_of_regs,ptr+1
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 break;
@@ -65,6 +69,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  Pointer value:" RED " %zu" RESET "\n(Pointer value underflowed to a very large number due to unsigned wraparound)\n",
                         pc, ptr-1
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 break;
@@ -94,6 +102,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                                     "  At instruction index " CYAN "%zu\n" RESET,
                                     pc
                                 );
+                                free(loop_stack.data);
+                                free(memory);
+                                free(stack.data);
+                                free(index_memory.data);
                                 exit(1);
                             } else {
                                 pc++;
@@ -106,6 +118,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                                     "  Valid range: " GREEN "0-%zu" RESET "\n",
                                     pc-2, num, index_memory.size-1
                                 );
+                                free(loop_stack.data);
+                                free(memory);
+                                free(stack.data);
+                                free(index_memory.data);
                                 exit(1);
                             } else {
                                 ptr = index_memory.data[num];
@@ -120,6 +136,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                             "  At instruction index " CYAN "%zu" RESET " (command: '->')\n",
                             pc
                         );
+                        free(loop_stack.data);
+                        free(memory);
+                        free(stack.data);
+                        free(index_memory.data);
                         exit(1);
                     }
                 } else if (code.data[pc + 1] == 'R') {
@@ -146,6 +166,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  At instruction index " CYAN "%zu" RESET " (command: 'X')\n",
                         pc
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 vector_size_t_pop(&index_memory);
@@ -163,6 +187,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  '^' has to be followed by an unsigned integer or 's'.\n",
                         pc
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 long param = extract_number(code.data, code_len, &pc);
@@ -176,6 +204,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  Largest possible '^'-parameter: " GREEN "%zu" RESET "\n",
                         pc, ptr-1, code_len-1
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 continue;
@@ -193,6 +225,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  Cell[" CYAN "%zu" RESET "] =" RED " %d " RESET"(valid range: " GREEN "0-255" RESET ")\n",
                         pc, ptr, memory[ptr]
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 printf("%c", (unsigned char)memory[ptr]);
@@ -208,6 +244,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                             "  Provided pre-input string length: %zu\n",
                             pc, pre_input_len
                         );
+                        free(loop_stack.data);
+                        free(memory);
+                        free(stack.data);
+                        free(index_memory.data);
                         exit(1);
                     }
                     inp = pre_input[pre_input_idx++];
@@ -228,6 +268,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                             "  Provided pre-input string length: %zu\n",
                             pc, pre_input_len
                         );
+                        free(loop_stack.data);
+                        free(memory);
+                        free(stack.data);
+                        free(index_memory.data);
                         exit(1);
                     }
                     input = extract_number_pre_input(pre_input, pre_input_len, &pre_input_idx);
@@ -245,6 +289,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                                 "  Provided input is not a valid integer.\n",
                                 pc
                         );
+                        free(loop_stack.data);
+                        free(memory);
+                        free(stack.data);
+                        free(index_memory.data);
                         exit(1);
                     }
                 }
@@ -269,6 +317,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  At instruction index " CYAN "%zu" RESET " (command: '_')\n",
                         pc
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
 
@@ -287,6 +339,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                             "  minez <file> --num-of-regs" GREEN " %zu " RESET "<-- HERE\n",
                             pc, reg1, num_of_regs, reg1+1
                         );
+                        free(loop_stack.data);
+                        free(memory);
+                        free(stack.data);
+                        free(index_memory.data);
                         exit(1);
                     }
                 } else if (code.data[pc + 1] == 'i') {
@@ -299,6 +355,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  Found character:" RED " '%c' " RESET "(expected uint or 'i')\n",
                         pc, code.data[pc + 1]
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 unsigned char op = code.data[++pc];
@@ -315,6 +375,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                             "  minez <file> --num-of-regs" GREEN " %zu " RESET "<-- HERE\n",
                             pc, reg2, num_of_regs, reg2+1
                         );
+                        free(loop_stack.data);
+                        free(memory);
+                        free(stack.data);
+                        free(index_memory.data);
                         exit(1);
                     }
                 } else if (code.data[pc + 1] == 'i') {
@@ -327,6 +391,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  Found character:" RED " '%c' " RESET "(expected uint or 'i')\n",
                         pc, code.data[pc + 1]
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 if (code.data[pc + 2] != '(') {
@@ -335,6 +403,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  At instruction index " CYAN "%zu" RESET " (command '{}')\n",
                         pc
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 if (op == '=') {
@@ -362,6 +434,10 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  Found character:" RED " '%c' " RESET "(expected '=', '<' or '>')\n",
                         pc, op
                     );
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 break;
@@ -381,7 +457,11 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  At instruction index " CYAN "%zu\n" RESET
                         "  The loop stack is empty; no matching opening '[' found.\n",
                         pc
-                    );
+                    );                
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 if (memory[ptr] != 0) {
@@ -398,7 +478,11 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         "  At instruction index " CYAN "%zu\n" RESET
                         "  The loop stack is empty.\n",
                         pc
-                    );
+                    );                
+                    free(loop_stack.data);
+                    free(memory);
+                    free(stack.data);
+                    free(index_memory.data);
                     exit(1);
                 }
                 if (memory[ptr] != 0) {
@@ -422,7 +506,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
 
             case 'd':
                 if (quiet) break;
-                printf("\n\nDebugging info at instruction index %zu\n", pc);
+                printf("\n\nDebugging information at instruction index %zu\n", pc);
                 printf("Memory: ");
                 for (size_t i = 0; i < print_until - 1; i++) {
                     printf("%d, ", memory[i]);
@@ -463,7 +547,11 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                 break;
 
             default:
-                fprintf(stderr, RED BOLD "\nError" RESET ": Unknown command '" RED "%c" RESET"' at instruction index " CYAN "%zu" RESET ".", code.data[pc], pc);
+                fprintf(stderr, RED BOLD "\nError" RESET ": Unknown command '" RED "%c" RESET"' at instruction index " CYAN "%zu" RESET ".", code.data[pc], pc);            
+                free(loop_stack.data);
+                free(memory);
+                free(stack.data);
+                free(index_memory.data);
                 exit(1);
         }
         pc++;

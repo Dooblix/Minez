@@ -1,5 +1,5 @@
 // main.c
-// Copyright (c) 2025 Dooblix
+// Copyright (c) 2026 Dooblix
 // Licensed under the MIT license. See LICENSE file for details.
 
 // Standart libs
@@ -9,7 +9,7 @@
 #include <string.h>
 #include <ctype.h>
 // Project headers
-#include "../include/minez_docs.h"
+#include "../include/minez_help.h"
 #include "../include/interpreter.h"
 #include "../include/vectors.h"
 #include "../include/utils.h"
@@ -28,12 +28,12 @@ int main(int argc, char* argv[]) {
     bool print_until_used = false;
     vector_int print_intervalls = make_vector_int(2);
     char* pre_input = NULL;
-    bool docs = false;
+    bool help = false;
     bool quiet = false;
 
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--docs") == 0 || strcmp(argv[i], "-d") == 0) {
-            docs = true;
+        if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+            help = true;
         } else  if(strcmp(argv[i], "--quiet") == 0 || strcmp(argv[i], "-q") == 0) {
             quiet = true;
         } else if (strcmp(argv[i], "--num-of-regs") == 0) {
@@ -84,8 +84,8 @@ int main(int argc, char* argv[]) {
         print_until = num_of_regs;
     }
 
-    if (docs) {
-        print_docs();
+    if (help) {
+        print_help();
         return 0;
     }
 
@@ -118,6 +118,7 @@ int main(int argc, char* argv[]) {
     if (prev) vector_char_push(&code, prev);
     fclose(file);
     
+    // Makes sure the program halts and prevents some index errors
     if (code.size == 0 || code.data[code.size-1] != ';') {
         vector_char_push(&code, ';');
     }

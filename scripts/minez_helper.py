@@ -1,5 +1,5 @@
 # minez_helper.py
-# Copyright (c) Dooblix 2025
+# Copyright (c) 2026 Dooblix
 # Licensed under the MIT license. See LICENSE file for details.
 
 import sys

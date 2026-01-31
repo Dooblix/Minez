@@ -57,13 +57,13 @@ mkdir -p build
 **Windows:**
 
 ```bash
-gcc -O3 src/main.c src/minez_docs.c src/vectors.c src/interpreter.c src/utils.c -o build/minez.exe
+gcc -O3 src/main.c src/minez_help.c src/vectors.c src/interpreter.c src/utils.c -o bin/minez.exe
 ```
 
 **Linux / macOS:**
 
 ```bash
-gcc -O3 src/main.c src/minez_docs.c src/vectors.c src/interpreter.c src/utils.c -o build/minez
+gcc -O3 src/main.c src/minez_docs.c src/vectors.c src/interpreter.c src/utils.c -o bin/minez
 ```
 
 - `-O3` enables optimization.  
@@ -75,13 +75,13 @@ gcc -O3 src/main.c src/minez_docs.c src/vectors.c src/interpreter.c src/utils.c 
 
 ```bash
 # Windows
-build\minez.exe --docs
+bin\minez.exe --help
 
 # Linux/macOS
-./build/minez --docs
+./bin/minez --help
 ```
 
-If the documentation message appears, the interpreter has been successfully compiled.
+If the help message appears, the interpreter has been successfully compiled.
 
 ---
 
@@ -90,7 +90,7 @@ If the documentation message appears, the interpreter has been successfully comp
 Run a Minez program with:
 
 ```bash
-./minez <path-to-program> [-d] [--docs] [-q] [--quiet] [--num-of-regs N] [--print-until N] [--print-intervalls A B ...] [--pre-input ""] [--no-pause]
+./minez <path-to-program> [-h] [--help] [-q] [--quiet] [--num-of-regs N] [--print-until N] [--print-intervalls A B ...] [--pre-input ""] [--no-pause]
 ```
 
 Options:
@@ -98,15 +98,15 @@ Options:
 * `--num-of-regs N` — Number of registers to allocate (default: 100).  
 * `--print-until N` — Number of memory cells to display after program ends and when using `d` (default: num_of_regs).  
 * `--print-intervalls A B ...` — Print memory contents in specified intervals. Each interval is a pair of indices `A B`. Multiple intervals can be provided. Must have an even number of integers.
-* `--pre-input ""` — Allows the user to provide input values that the program uses before execution. Each input integer must be separated by a delimiter. Any character can be used as a delimiter, but '\n' is recommended for readability. The length of the pre-input string must match the number of inputs the program expects. (Example: ```.\build\minez.exe examples\calc.minez --pre-input "234\n/-34\n"```)
+* `--pre-input ""` — Allows the user to provide input values that the program uses before execution. Each input integer must be separated by a delimiter. Any character can be used as a delimiter, but '\n' is recommended for readability. The length of the pre-input string must match the number of inputs the program expects. (Example: ```.\bin\minez-windows.exe examples\calc.minez --pre-input "234\n/-34\n"```)
 * `--no-pause` — Do not wait for keypress after program ends.
 * `--quiet`/`-q` — Disables all printing of metadata and debugger (`d`) commands.
-* `--docs`/`-d` — Prints a shortened version of this README.
+* `--help`/`-h` — Prints out this usage guide.
 
 Example:
 
 ```bash
-./minez.exe ../examples/hello_world.minez --num-of-regs 1
+./minez-windows.exe ../examples/hello_world.minez --num-of-regs 1
 ```
 
 Will output:
@@ -221,4 +221,4 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 
 ## Author
 
-Dooblix © 2025
+Dooblix © 2026

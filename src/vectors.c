@@ -1,5 +1,5 @@
 // vectors.c
-// Copyright (c) 2025 Dooblix
+// Copyright (c) 2026 Dooblix
 // Licensed under the MIT license. See LICENSE file for details.
 
 #include <stdlib.h>
