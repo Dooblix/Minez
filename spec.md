@@ -330,3 +330,9 @@ Each error reports:
 
 * Runtime is measured in seconds internally
 * Exposed to programs in milliseconds
+
+---
+
+## Author
+
+Dooblix © 2026
