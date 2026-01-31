@@ -131,7 +131,7 @@ Press any key to continue...
 
 ## Python Helper
 
-`minez_helper.py` can generate repetitive Minez code automatically (strings or lists):
+`minez_helper.py` can generate repetitive Minez code automatically (printing, strings or lists):
 
 ```bash
 python scripts/minez_helper.py string "Hello" --reg 1 # >1+72#+29#+7##+3# 
@@ -140,6 +140,7 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 
 * `--clear-garbage` — Resets used registers to `0`.
 * `--as-list` — Store a string as a list of ASCII values (only for type `string`).
+* **Note:** `string` (without `--as-list`) produces a Minez snippet that prints the string.
 
 ---
 
