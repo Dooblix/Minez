@@ -207,7 +207,7 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 
 | Command | Description                                                                |
 | ------- | -------------------------------------------------------------------------- |
-| `d`     | Print debugging information (Memory, Pointer, Stack, Index memory, Usage). |
+| `d`     | Print debugging information (Memory, Pointer, Stack, Index memory, Loop stack). |
 
 ---
 
