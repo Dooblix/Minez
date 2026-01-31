@@ -96,7 +96,7 @@ Options:
 * `--pre-input ""` — Provides input values before execution. Separate integers with a delimiter (newline recommended). The number of inputs must match program expectations. Example:
 
 ```bash
-.\bin\minez-windows.exe examples\calc.minez --pre-input "234\n-34\n"
+.\bin\minez-windows.exe examples/official/calc.minez --pre-input "234\n-34\n"
 ```
 
 * `--no-pause` — Do not wait for keypress after program ends.
@@ -106,7 +106,7 @@ Options:
 Example:
 
 ```bash
-./bin/minez-windows.exe ../examples/hello_world.minez --num-of-regs 1
+./bin/minez-windows.exe ../examples/official/hello_world.minez --num-of-regs 1
 ```
 
 Will output:
@@ -210,6 +210,20 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 | Command | Description                                                                |
 | ------- | -------------------------------------------------------------------------- |
 | `d`     | Print debugging information (Memory, Pointer, Stack, Index memory, Loop stack). |
+
+Sieht schon sehr gut aus 👍 Ich würde nur minimal sprachlich glätten (v.a. Grammar + “its capabilities”) und den Flow etwas cleaner machen:
+
+---
+
+## Examples
+
+This repository contains two kinds of examples:
+
+* `examples/official/` — written and maintained by me, thoroughly tested, and meant to demonstrate how Minez works and what it can do
+* `examples/community/` — written by the community, showcasing what people build with Minez
+
+Got a cool Minez project?
+Open a GitHub Issue and share it — It might be added it to `examples/community/`!
 
 ---
 
