@@ -1,6 +1,7 @@
 minez
 ├── bin
     ├── minez-linux
+    ├── minez-linux-static
     └── minez-windows.exe
 ├── examples
     ├── brainfuck_interpreter.minez
@@ -13,7 +14,7 @@ minez
 ├── include
     ├── getch.h
     ├── interpreter.h
-    ├── minez_docs.h
+    ├── minez_help.h
     ├── utils.h
     └── vectors.h
 ├── scripts
@@ -21,7 +22,7 @@ minez
 ├── src
     ├── interpreter.c
     ├── main.c
-    ├── minez_docs.c
+    ├── minez_help.c
     ├── utils.c
     └── vectors.c
 ├── .gitignore

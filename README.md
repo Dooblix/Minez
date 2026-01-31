@@ -1,12 +1,12 @@
-# **Minez Documentation**
+# Minez Documentation
 
-**Minez** is an esoteric programming language created by *Dooblix* in 2024 (current version: 2025), designed to be a more accessible and powerful version of Urban Müller's minimalistic esoteric programming language "*Brainfuck*".
+**Minez** is an esoteric programming language created by *Dooblix* in 2024 (current version: 2025), inspired by Urban Müller's minimalistic esoteric programming language "*Brainfuck*".
 
 ---
 
 ## Installation
 
-Pre-compiled binaries are provided. For those who prefer building from source, follow the steps below.
+Pre-compiled binaries are provided for Windows and Linux. For those who prefer building from source, follow the steps below.
 
 ---
 
@@ -14,7 +14,7 @@ Pre-compiled binaries are provided. For those who prefer building from source, f
 
 - **C compiler installed**:
   - **Windows:** MinGW-w64 or MSYS2 (ensure `gcc` is in your PATH)
-  - **Linux:** `gcc` or `clang` (e.g., `sudo apt install build-essential` on Ubuntu/Debian)
+  - **Linux/macOS:** `gcc` or `clang` (e.g., `sudo apt install build-essential` on Ubuntu/Debian)
 - **Git** (optional, for cloning the repository)
 - Terminal / command prompt with access to `gcc`
 
@@ -31,54 +31,49 @@ cd minez
 
 **Option 2: Download ZIP**
 
-- Download the ZIP from GitHub and extract it.
-- Navigate to the extracted folder:
+* Download the ZIP from GitHub and extract it.
+* Navigate to the extracted folder:
 
 ```bash
 cd minez
 ```
 
-Remove any existing pre-compiled binaries before building from source.
+> Remove any existing binaries in `bin/` before building from source to avoid conflicts.
 
 ---
 
-### 3. Create build folder
-
-```bash
-mkdir -p build
-```
-
-> `-p` ensures the folder is only created if it doesn't exist (works on Linux and Windows PowerShell).
-
----
-
-### 4. Compile
+### 3. Compile
 
 **Windows:**
 
 ```bash
-gcc -O3 src/main.c src/minez_help.c src/vectors.c src/interpreter.c src/utils.c -o bin/minez.exe
+gcc -O3 src/*.c -o bin/minez-windows.exe
 ```
 
-**Linux / macOS:**
+**Linux/macOS:**
 
 ```bash
-gcc -O3 src/main.c src/minez_docs.c src/vectors.c src/interpreter.c src/utils.c -o bin/minez
+gcc -O3 src/*.c -o bin/minez-linux -lm
 ```
 
-- `-O3` enables optimization.  
-- optional: `-Wall` enables all compiler warnings.
+* `-O3` enables optimization.
+* Optional: `-Wall` enables all compiler warnings.
+* For maximum portability across Linux systems, you can use static linking:
+
+```bash
+gcc -O3 src/*.c -o bin/minez-linux-static -lm -static
+```
 
 ---
 
-### 5. Test
+### 4. Test
 
 ```bash
 # Windows
-bin\minez.exe --help
+bin\minez-windows.exe --help
 
 # Linux/macOS
-./bin/minez --help
+./bin/minez-linux --help
 ```
 
 If the help message appears, the interpreter has been successfully compiled.
@@ -90,15 +85,20 @@ If the help message appears, the interpreter has been successfully compiled.
 Run a Minez program with:
 
 ```bash
-./minez <path-to-program> [-h] [--help] [-q] [--quiet] [--num-of-regs N] [--print-until N] [--print-intervalls A B ...] [--pre-input ""] [--no-pause]
+minez <path-to-program> [-h] [--help] [-q] [--quiet] [--num-of-regs N] [--print-until N] [--print-intervalls A B ...] [--pre-input ""] [--no-pause]
 ```
 
 Options:
 
-* `--num-of-regs N` — Number of registers to allocate (default: 100).  
-* `--print-until N` — Number of memory cells to display after program ends and when using `d` (default: num_of_regs).  
+* `--num-of-regs N` — Number of registers to allocate (default: 100).
+* `--print-until N` — Number of memory cells to display after program ends and when using `d` (default: num_of_regs).
 * `--print-intervalls A B ...` — Print memory contents in specified intervals. Each interval is a pair of indices `A B`. Multiple intervals can be provided. Must have an even number of integers.
-* `--pre-input ""` — Allows the user to provide input values that the program uses before execution. Each input integer must be separated by a delimiter. Any character can be used as a delimiter, but '\n' is recommended for readability. The length of the pre-input string must match the number of inputs the program expects. (Example: ```.\bin\minez-windows.exe examples\calc.minez --pre-input "234\n/-34\n"```)
+* `--pre-input ""` — Provides input values before execution. Separate integers with a delimiter (newline recommended). The number of inputs must match program expectations. Example:
+
+```bash
+.\bin\minez-windows.exe examples\calc.minez --pre-input "234\n-34\n"
+```
+
 * `--no-pause` — Do not wait for keypress after program ends.
 * `--quiet`/`-q` — Disables all printing of metadata and debugger (`d`) commands.
 * `--help`/`-h` — Prints out this usage guide.
@@ -106,7 +106,7 @@ Options:
 Example:
 
 ```bash
-./minez-windows.exe ../examples/hello_world.minez --num-of-regs 1
+./bin/minez-windows.exe ../examples/hello_world.minez --num-of-regs 1
 ```
 
 Will output:
@@ -155,15 +155,15 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 
 ### Flow Control
 
-| Command | Description                                                                                                        |
-| ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `^y`    | Jump to program index `y`, saving pointer of the next command on the stack.                                        |
-| `^s`    | Jump back to the last saved value on the stack.                                                                    |
-| `[`     | Begin loop (executes while current register ≠ 0). Skipped if register = 0.                                         |
-| `~`     | Skip to next loop iteration (like `continue`).                                                                     |
-| `]`     | End loop (repeats if register ≠ 0).                                                                                |
-| `{}`    | Conditional block. Syntax: `{reg>reg}(...)`, `{reg<reg}(...)`, `{reg=reg}(...)`. Use `i` for the current register. |
-| `;`     | End program.                                                                                                       |
+| Command | Description                                                                                 |
+| ------- | ------------------------------------------------------------------------------------------- |
+| `^y`    | Jump to program index `y`, saving pointer of the next command on the stack.                 |
+| `^s`    | Jump back to the last saved value on the stack.                                             |
+| `[`     | Begin loop (executes while current register ≠ 0). Skipped if register = 0.                  |
+| `~`     | Skip to next loop iteration (like `continue`).                                              |
+| `]`     | End loop (repeats if register ≠ 0).                                                         |
+| `{}`    | Conditional block: `{reg>reg}`, `{reg<reg}`, `{reg=reg}`. Use `i` for the current register. |
+| `;`     | End program.                                                                                |
 
 ### Stack Operations
 
