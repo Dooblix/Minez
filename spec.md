@@ -294,7 +294,7 @@ Errors:
 
 ---
 
-## 5.11 Invalid Character
+### 5.11 Invalid Character
 
 * → `SytaxError`
 
