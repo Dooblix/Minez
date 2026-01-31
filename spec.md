@@ -63,15 +63,8 @@ This document specifies the runtime behavior of the Minez Virtual Machine as imp
 
 ## 3. Integer Semantics
 
-### 3.1 Integer Type
-
 * Registers store signed integers of implementation-defined width (`int`).
 * Overflow behavior follows the host C implementation.
-
-### 3.2 Truthiness
-
-* Zero (`0`) is false.
-* Any non-zero value is true.
 
 ---
 
@@ -328,7 +321,7 @@ Each error reports:
 
 ## 7. Runtime
 
-* Runtime is measured in seconds internally
+* Runtime is measured in seconds internally (`double`)
 * Exposed to programs in milliseconds
 
 ---
