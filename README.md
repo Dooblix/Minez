@@ -211,8 +211,6 @@ python scripts/minez_helper.py list "10,20,-30" --reg 5 --clear-garbage # >5x+10
 | ------- | -------------------------------------------------------------------------- |
 | `d`     | Print debugging information (Memory, Pointer, Stack, Index memory, Loop stack). |
 
-Sieht schon sehr gut aus 👍 Ich würde nur minimal sprachlich glätten (v.a. Grammar + “its capabilities”) und den Flow etwas cleaner machen:
-
 ---
 
 ## Examples
