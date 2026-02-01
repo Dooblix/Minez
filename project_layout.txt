@@ -30,6 +30,6 @@ minez
     └── vectors.c
 ├── .gitignore
 ├── LICENSE
-├── project_layout.txt
 ├── README.md
+├── project_layout.txt
 └── spec.md
