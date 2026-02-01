@@ -4,13 +4,16 @@ minez
     ├── minez-linux-static
     └── minez-windows.exe
 ├── examples
-    ├── brainfuck_interpreter.minez
-    ├── bubble_sort.minez
-    ├── calc.minez
-    ├── early_calc.minez
-    ├── fibonacci.minez
-    ├── hello_world.minez
-    └── mlp.minez
+    ├── community
+        └── no_community_contributions_yet
+    └── official
+        ├── brainfuck_interpreter.minez
+        ├── bubble_sort.minez
+        ├── calc.minez
+        ├── early_calc.minez
+        ├── fibonacci.minez
+        ├── hello_world.minez
+        └── mlp.minez
 ├── include
     ├── getch.h
     ├── interpreter.h
@@ -28,4 +31,5 @@ minez
 ├── .gitignore
 ├── LICENSE
 ├── project_layout.txt
-└── README.md
+├── README.md
+└── spec.md
