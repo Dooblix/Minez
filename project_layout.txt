@@ -1,8 +1,10 @@
 minez
 ├── bin
-    ├── minez-linux
-    ├── minez-linux-static
-    └── minez-windows.exe
+    ├── minez-linux-arm64
+    ├── minez-linux-arm64-static
+    ├── minez-linux-x86_64
+    ├── minez-linux-x86_64-static
+    └── minez-windows-x86_64.exe
 ├── examples
     ├── community
         └── no_community_contributions_yet
