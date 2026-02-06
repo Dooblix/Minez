@@ -9,7 +9,7 @@ This document specifies the runtime behavior of the Minez Virtual Machine as imp
 2. Memory Model
 3. Integer Semantics
 4. Stacks and Auxiliary Structures
-5. Instrucition Set
+5. Instruction Set
 6. Error Model
 7. Runtime
 
@@ -289,7 +289,7 @@ Errors:
 
 ### 5.11 Invalid Character
 
-* → `SytaxError`
+* → `SyntaxError`
 
 ---
 
