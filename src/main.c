@@ -2,7 +2,7 @@
 // Copyright (c) 2026 Dooblix
 // Licensed under the MIT license. See LICENSE file for details.
 
-// Standart libs
+// Standard libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -149,4 +149,5 @@ cleanup:
     free(code.data);
     free(print_intervals.data);
     return status;
+
 }
