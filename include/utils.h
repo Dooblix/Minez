@@ -4,10 +4,10 @@
 #include <math.h>
 #include "vectors.h"
 
-size_t search_for_endloop(char* code, size_t code_len, size_t pc);
+size_t search_for_endloop(char* code, size_t code_len, size_t pc, int* err);
 long extract_number(char* code, size_t code_len, size_t* pc);
 long extract_number_pre_input(char* text, size_t length, size_t* idx);
-size_t search_for_endif(char* code, size_t code_len, size_t pc);
+size_t search_for_endif(char* code, size_t code_len, size_t pc, int* err);
 double get_time_sec();
 char* parse_pre_input(char* pre_input);
 static inline int runtime_mz(double start) {

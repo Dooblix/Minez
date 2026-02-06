@@ -28,6 +28,7 @@ int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int 
     size_t ptr = 0;
     vector_size_t index_memory = make_vector_size_t(1);
     vector_size_t loop_stack = make_vector_size_t(1);
+    int err = 0;
 
     double start = get_time_sec();
     while (pc < code_len) {
@@ -284,7 +285,7 @@ int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int 
                     } else {
                         fprintf(stderr,
                                 RED BOLD "\nInputError" RESET ": expected an integer.\n"
-                                "  At instuction index " CYAN "%zu" RESET " (command ':'):\n"
+                                "  At instruction index " CYAN "%zu" RESET " (command ':'):\n"
                                 "  Provided input is not a valid integer.\n",
                                 pc
                         );
@@ -412,19 +413,43 @@ int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int 
                     if (memory[reg1] == memory[reg2]) {
                         pc += 2;
                     } else {
-                        pc = search_for_endif(code.data, code_len, pc + 2);
+                        pc = search_for_endif(code.data, code_len, pc + 2, &err);
+                        if (err) {
+                            fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%zu" RESET ": Missing closing bracket ')'.", pc);
+                            free(loop_stack.data);
+                            free(memory);
+                            free(stack.data);
+                            free(index_memory.data);
+                            return 1;
+                        }
                     }
                 } else if (op == '<') {
                     if (memory[reg1] < memory[reg2]) {
                         pc += 2;
                     } else {
-                        pc = search_for_endif(code.data, code_len, pc + 2);
+                        pc = search_for_endif(code.data, code_len, pc + 2, &err);
+                        if (err) {
+                            fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%zu" RESET ": Missing closing bracket ')'.", pc);
+                            free(loop_stack.data);
+                            free(memory);
+                            free(stack.data);
+                            free(index_memory.data);
+                            return 1;
+                        }
                     }
                 } else if (op == '>') {
                     if (memory[reg1] > memory[reg2]) {
                         pc += 2;
                     } else {
-                        pc = search_for_endif(code.data, code_len, pc + 2);
+                        pc = search_for_endif(code.data, code_len, pc + 2, &err);
+                        if (err) {
+                            fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%zu" RESET ": Missing closing bracket ')'.", pc);
+                            free(loop_stack.data);
+                            free(memory);
+                            free(stack.data);
+                            free(index_memory.data);
+                            return 1;
+                        }
                     }
                 } else {
                     fprintf(stderr,
@@ -443,7 +468,15 @@ int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int 
 
             case '[':
                 if (memory[ptr] == 0) {
-                    pc = search_for_endloop(code.data, code_len, pc);
+                    pc = search_for_endloop(code.data, code_len, pc, &err);
+                    if (err) {
+                        fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%zu" RESET ": Missing closing bracket ']'.", pc);
+                        free(loop_stack.data);
+                        free(memory);
+                        free(stack.data);
+                        free(index_memory.data);
+                        return 1;
+                    }                   
                 } else {
                     vector_size_t_push(&loop_stack, pc);
                 }
@@ -488,7 +521,15 @@ int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int 
                     pc = loop_stack.data[loop_stack.size - 1];
                 } else {
                     vector_size_t_pop(&loop_stack);
-                    pc = search_for_endloop(code.data, code_len, pc);
+                    pc = search_for_endloop(code.data, code_len, pc, &err);
+                    if (err) {
+                        fprintf(stderr, RED BOLD "\nSyntaxError" RESET " at index " CYAN "%zu" RESET ": Missing closing bracket ']'.", pc);
+                        free(loop_stack.data);
+                        free(memory);
+                        free(stack.data);
+                        free(index_memory.data);
+                        return 1;
+                    }
                 }
                 break;
 

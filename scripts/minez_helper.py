@@ -40,7 +40,7 @@ def minez_list(data: list[int], reg: int, clear_garbage) -> str:
 
 def main(argv=None) -> None:
     parser = argparse.ArgumentParser(
-        description="minez_helper — generates repetetive Minez code snippets automatically (e.g. printing out strings or initializing lists)"
+        description="minez_helper — generates repetitive Minez code snippets automatically (e.g. printing out strings or initializing lists)"
     )
 
     parser.add_argument(
@@ -51,7 +51,7 @@ def main(argv=None) -> None:
     parser.add_argument(
         "data",
         nargs="?",
-        help='String to be printet (in "") or list elements (in "", seperated by  \',\').'
+        help='String to be printed (in "") or list elements (in "", separated by  \',\').'
     )
     parser.add_argument(
         "--as-list",
