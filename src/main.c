@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     int num_of_regs = 100;
     size_t print_until = 100;
     bool print_until_used = false;
-    vector_int print_intervalls = make_vector_int(2);
+    vector_int print_intervals = make_vector_int(2);
     char* parsed = NULL;
     char* pre_input = NULL;
     bool help = false;
@@ -62,12 +62,12 @@ int main(int argc, char* argv[]) {
                 status = 1;
                 goto cleanup;
             }
-        } else if (strcmp(argv[i], "--print-intervalls") == 0) {
+        } else if (strcmp(argv[i], "--print-intervals") == 0) {
             while (i + 1 < argc && argv[i+1][0] != '-') {
-                vector_int_push(&print_intervalls, atoi(argv[++i]));
+                vector_int_push(&print_intervals, atoi(argv[++i]));
             }
-            if (print_intervalls.size % 2 != 0) {
-                fprintf(stderr, "Error: --print-intervalls expects a list of integers with an even size!");
+            if (print_intervals.size % 2 != 0) {
+                fprintf(stderr, "Error: --print-intervals expects a list of integers with an even size!");
                 status = 1;
                 goto cleanup;
             }
@@ -142,11 +142,11 @@ int main(int argc, char* argv[]) {
         }
     }
     
-    status = interpret(code, num_of_regs, print_until, print_intervalls, parsed, no_pause, quiet);
+    status = interpret(code, num_of_regs, print_until, print_intervals, parsed, no_pause, quiet);
 
 cleanup:
     free(parsed);
     free(code.data);
-    free(print_intervalls.data);
+    free(print_intervals.data);
     return status;
 }

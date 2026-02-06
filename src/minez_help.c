@@ -20,7 +20,7 @@ void print_help() {
     printf("  --num-of-regs N        Number of registers to allocate (default: 100)\n");
     printf("  --print-until N        Number of memory cells to display after program ends\n");
     printf("                         and when using 'd' (default: num_of_regs)\n");
-    printf("  --print-intervalls A B ...\n");
+    printf("  --print-intervals A B ...\n");
     printf("                         Print memory contents in specified intervals.\n");
     printf("                         Each interval is a pair A B. Must be even count.\n");
     printf("  --pre-input \"\"         Provide program input before execution.\n");

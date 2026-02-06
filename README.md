@@ -85,14 +85,14 @@ If the help message appears, the interpreter has been successfully compiled.
 Run a Minez program with:
 
 ```bash
-minez <path-to-program> [-h] [--help] [-q] [--quiet] [--num-of-regs N] [--print-until N] [--print-intervalls A B ...] [--pre-input ""] [--no-pause]
+minez <path-to-program> [-h] [--help] [-q] [--quiet] [--num-of-regs N] [--print-until N] [--print-intervals A B ...] [--pre-input ""] [--no-pause]
 ```
 
 Options:
 
 * `--num-of-regs N` — Number of registers to allocate (default: 100).
 * `--print-until N` — Number of memory cells to display after program ends and when using `d` (default: num_of_regs).
-* `--print-intervalls A B ...` — Print memory contents in specified intervals. Each interval is a pair of indices `A B`. Multiple intervals can be provided. Must have an even number of integers.
+* `--print-intervals A B ...` — Print memory contents in specified intervals. Each interval is a pair of indices `A B`. Multiple intervals can be provided. Must have an even number of integers.
 * `--pre-input ""` — Provides input values before execution. Separate integers with a delimiter (newline recommended). The number of inputs must match program expectations. Example:
 
 ```bash

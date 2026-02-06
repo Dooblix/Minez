@@ -18,7 +18,7 @@
 #define GREEN "\033[32m"
 #define RESET "\033[0m"
 
-int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int print_intervalls, char* pre_input, bool no_pause, bool quiet) {
+int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int print_intervals, char* pre_input, bool no_pause, bool quiet) {
     size_t pre_input_idx = 0;
     size_t pre_input_len = pre_input ? strlen(pre_input) : 0;
     size_t code_len = code.size;
@@ -568,10 +568,10 @@ int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int 
             printf(" . . .");
         }
         printf("\n");
-        if (print_intervalls.size > 0) {
-            for (size_t i = 0; i < print_intervalls.size; i += 2) {
-                size_t start = print_intervalls.data[i];
-                size_t end = print_intervalls.data[i + 1];
+        if (print_intervals.size > 0) {
+            for (size_t i = 0; i < print_intervals.size; i += 2) {
+                size_t start = print_intervals.data[i];
+                size_t end = print_intervals.data[i + 1];
                 if (start > end) {
                     printf("Invalid interval %zu, %zu\n", start, end);
                     continue;
