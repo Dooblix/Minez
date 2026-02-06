@@ -18,8 +18,7 @@
 #define GREEN "\033[32m"
 #define RESET "\033[0m"
 
-void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int print_intervalls, char* pre_input, bool no_pause, bool quiet) {
-
+int interpret(vector_char code, int num_of_regs, size_t print_until, vector_int print_intervalls, char* pre_input, bool no_pause, bool quiet) {
     size_t pre_input_idx = 0;
     size_t pre_input_len = pre_input ? strlen(pre_input) : 0;
     size_t code_len = code.size;
@@ -55,7 +54,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 break;
 
@@ -73,7 +72,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 break;
 
@@ -106,7 +105,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                                 free(memory);
                                 free(stack.data);
                                 free(index_memory.data);
-                                exit(1);
+                                return 1;
                             } else {
                                 pc++;
                             }
@@ -122,7 +121,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                                 free(memory);
                                 free(stack.data);
                                 free(index_memory.data);
-                                exit(1);
+                                return 1;
                             } else {
                                 ptr = index_memory.data[num];
                             }
@@ -140,7 +139,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         free(memory);
                         free(stack.data);
                         free(index_memory.data);
-                        exit(1);
+                        return 1;
                     }
                 } else if (code.data[pc + 1] == 'R') {
                     memory[ptr] -= runtime_mz(start);
@@ -170,7 +169,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 vector_size_t_pop(&index_memory);
                 break;
@@ -191,7 +190,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 long param = extract_number(code.data, code_len, &pc);
                 vector_int_push(&stack, pc+1);
@@ -208,7 +207,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 continue;
 
@@ -229,7 +228,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 printf("%c", (unsigned char)memory[ptr]);
                 break;
@@ -248,7 +247,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         free(memory);
                         free(stack.data);
                         free(index_memory.data);
-                        exit(1);
+                        return 1;
                     }
                     inp = pre_input[pre_input_idx++];
                 } else {
@@ -272,7 +271,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         free(memory);
                         free(stack.data);
                         free(index_memory.data);
-                        exit(1);
+                        return 1;
                     }
                     input = extract_number_pre_input(pre_input, pre_input_len, &pre_input_idx);
                     printf("%d\n", input);
@@ -293,7 +292,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         free(memory);
                         free(stack.data);
                         free(index_memory.data);
-                        exit(1);
+                        return 1;
                     }
                 }
                 break;
@@ -321,7 +320,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
 
             case '{':
@@ -343,7 +342,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         free(memory);
                         free(stack.data);
                         free(index_memory.data);
-                        exit(1);
+                        return 1;
                     }
                 } else if (code.data[pc + 1] == 'i') {
                     reg1 = ptr;
@@ -359,7 +358,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 unsigned char op = code.data[++pc];
                 size_t reg2;
@@ -379,7 +378,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                         free(memory);
                         free(stack.data);
                         free(index_memory.data);
-                        exit(1);
+                        return 1;
                     }
                 } else if (code.data[pc + 1] == 'i') {
                     reg2 = ptr;
@@ -395,7 +394,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 if (code.data[pc + 2] != '(') {
                     fprintf(stderr, 
@@ -407,7 +406,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 if (op == '=') {
                     if (memory[reg1] == memory[reg2]) {
@@ -438,7 +437,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 break;
 
@@ -462,7 +461,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 if (memory[ptr] != 0) {
                     pc = loop_stack.data[loop_stack.size - 1];
@@ -483,7 +482,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                     free(memory);
                     free(stack.data);
                     free(index_memory.data);
-                    exit(1);
+                    return 1;
                 }
                 if (memory[ptr] != 0) {
                     pc = loop_stack.data[loop_stack.size - 1];
@@ -552,7 +551,7 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
                 free(memory);
                 free(stack.data);
                 free(index_memory.data);
-                exit(1);
+                return 1;
         }
         pc++;
     }
@@ -615,4 +614,5 @@ void interpret(vector_char code, int num_of_regs, size_t print_until, vector_int
     free(memory);
     free(stack.data);
     free(index_memory.data);
+    return 0;
 }

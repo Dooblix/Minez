@@ -17,16 +17,20 @@
 int main(int argc, char* argv[]) {
 
     if (argc < 2) {
-        fprintf(stderr, "Fatal error: no arguments provided.\n");
+        fprintf(stderr, "Fatal error: no arguments provided. (use '-h' or '--help' for usage documentation)\n");
         return 1;
     }
 
+    int status = 0;
+
+    vector_char code = make_vector_char(50);
     char* file_name = NULL;
     bool no_pause = false;
     int num_of_regs = 100;
     size_t print_until = 100;
     bool print_until_used = false;
     vector_int print_intervalls = make_vector_int(2);
+    char* parsed = NULL;
     char* pre_input = NULL;
     bool help = false;
     bool quiet = false;
@@ -41,19 +45,22 @@ int main(int argc, char* argv[]) {
                 num_of_regs = atoi(argv[++i]);
             } else {
                 fprintf(stderr, "Error: --num-of-regs expects a number\n");
-                return 1;
+                status = 1;
+                goto cleanup;
             }
         } else if (strcmp(argv[i], "--print-until") == 0) {
             if (i + 1 < argc) {
                 print_until = atoi(argv[++i]);
                 if (print_until > num_of_regs) {
                     fprintf(stderr, "Error: --print-until has to be smaller than num_of_regs.\n");
-                    return 1;
+                    status = 1;
+                    goto cleanup;
                 }
                 print_until_used = true;
             } else {
                 fprintf(stderr, "Error: --print-until expects a number\n");
-                return 1;
+                status = 1;
+                goto cleanup;
             }
         } else if (strcmp(argv[i], "--print-intervalls") == 0) {
             while (i + 1 < argc && argv[i+1][0] != '-') {
@@ -61,7 +68,8 @@ int main(int argc, char* argv[]) {
             }
             if (print_intervalls.size % 2 != 0) {
                 fprintf(stderr, "Error: --print-intervalls expects a list of integers with an even size!");
-                return 1;
+                status = 1;
+                goto cleanup;
             }
         } else if (strcmp(argv[i], "--no-pause") == 0) {
             no_pause = true;
@@ -70,13 +78,15 @@ int main(int argc, char* argv[]) {
                 pre_input = argv[++i];
             } else {
                 fprintf(stderr, "Error: --pre-input expects a string!");
-                return 1;
+                status = 1;
+                goto cleanup;
             }
         } else if (argv[i][0] != '-') {
             file_name = argv[i];
         } else {
             fprintf(stderr, "Unknown argument: %s\n", argv[i]);
-            return 1;
+            status = 1;
+            goto cleanup;
         }
     }
 
@@ -86,22 +96,23 @@ int main(int argc, char* argv[]) {
 
     if (help) {
         print_help();
-        return 0;
+        goto cleanup;
     }
 
     if (file_name == NULL) {
-        fprintf(stderr, "Fatal error: missing one required argument 'source_file' (required when not using '--docs').");
-        return 1;
+        fprintf(stderr, "Fatal error: missing one required argument 'source_file' (required when not using '--help').");
+        status = 1;
+        goto cleanup;
     }
 
     FILE* file = fopen(file_name, "r");
     if (file == NULL) {
         printf("Error: File '%s' not found.\n", file_name);
-        return 1;
+        status = 1;
+        goto cleanup;
     }
 
     int curr_ch;
-    vector_char code = make_vector_char(50);
     size_t code_len = 0;
     char prev = 0;
     // Reads file; removes comments and whitespaces
@@ -122,10 +133,20 @@ int main(int argc, char* argv[]) {
     if (code.size == 0 || code.data[code.size-1] != ';') {
         vector_char_push(&code, ';');
     }
-    
-    interpret(code, num_of_regs, print_until, print_intervalls, parse_pre_input(pre_input), no_pause, quiet);
 
+    if (pre_input) {
+        parsed = parse_pre_input(pre_input);
+        if (!parsed) {
+            status = 1;
+            goto cleanup;
+        }
+    }
+    
+    status = interpret(code, num_of_regs, print_until, print_intervalls, parsed, no_pause, quiet);
+
+cleanup:
+    free(parsed);
     free(code.data);
     free(print_intervalls.data);
-    return 0;
+    return status;
 }
