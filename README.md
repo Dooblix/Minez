@@ -106,7 +106,7 @@ Options:
 Example:
 
 ```bash
-./bin/minez-windows.exe ../examples/official/hello_world.minez --num-of-regs 1
+./bin/minez-windows.exe examples/official/hello_world.minez --num-of-regs 1
 ```
 
 Will output:
