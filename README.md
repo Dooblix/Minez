@@ -26,7 +26,7 @@ Pre-compiled binaries are provided for Windows and Linux. For those who prefer b
 
 ```bash
 git clone https://github.com/Dooblix/Minez.git
-cd minez
+cd Minez
 ```
 
 **Option 2: Download ZIP**
@@ -35,7 +35,7 @@ cd minez
 * Navigate to the extracted folder:
 
 ```bash
-cd minez
+cd Minez
 ```
 
 > Remove any existing binaries in `bin/` before building from source to avoid conflicts.
@@ -222,14 +222,6 @@ This repository contains two kinds of examples:
 
 Got a cool Minez project?
 Open a GitHub Issue and share it — It might be added it to `examples/community/`!
-
----
-
-## Notes
-
-* Minez is experimental and intended for learning and experimentation.
-* Large programs or deep loops may significantly increase runtime.
-* Syntax errors (unmatched `]` or `)`) will terminate the program with a descriptive error message.
 
 ---
 
