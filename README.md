@@ -6,7 +6,7 @@
 
 ## Installation
 
-Pre-compiled binaries are provided for Windows and Linux. For those who prefer building from source, follow the steps below.
+Pre-compiled binaries are available for Windows and Linux. You can find them in the `bin/` directory or download them from the GitHub Releases section. For those who prefer building from source, follow the steps below.
 
 ---
 
