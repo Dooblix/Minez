@@ -2,6 +2,9 @@
 
 **Minez** is an esoteric programming language created by *Dooblix* in 2024 (current version: 2025), inspired by Urban Müller's minimalistic esoteric programming language "*Brainfuck*".
 
+For details on Minez' history and philosophy, see the Esolang Wiki page:
+https://esolangs.org/wiki/Minez
+
 ---
 
 ## Installation
@@ -221,7 +224,7 @@ This repository contains two kinds of examples:
 * `examples/community/` — written by the community, showcasing what people build with Minez
 
 Got a cool Minez project?
-Open a GitHub Issue and share it — It might be added it to `examples/community/`!
+Open a GitHub Issue and share it — It might be added to `examples/community/`!
 
 ---
 
