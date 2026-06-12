@@ -1,0 +1,4 @@
+// Integer Accumulator by Raxfi
+// First ever community contribution
+// Needs at least 3 + len(list) memory cells
+>|@>+[>:@|]X+[>0_->X]>0#!;
