@@ -7,8 +7,11 @@ minez
     └── minez-windows-x86_64.exe
 ├── examples
     ├── community
-        └── no_community_contributions_yet
-    └── official
+        └── Integer Accumulators (by Raxfi and Dooblix)
+            ├── accumulator_dooblix.minez
+            ├── accumulator_raxfi.minez
+            └── README.md
+└── official
         ├── brainfuck_interpreter.minez
         ├── bubble_sort.minez
         ├── calc.minez
