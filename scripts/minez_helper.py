@@ -39,6 +39,7 @@ def minez_list(data: list[int], reg: int, clear_garbage) -> str:
     return "".join(result_parts[:-1])
 
 def main(argv=None) -> None:
+    print("welcome")
     parser = argparse.ArgumentParser(
         description="minez_helper — generates repetitive Minez code snippets automatically (e.g. printing out strings or initializing lists)"
     )
