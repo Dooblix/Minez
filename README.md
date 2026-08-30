@@ -1,7 +1,5 @@
-<img align="right" width="200" style="padding-left: 20px; padding-bottom: 10px; padding-top: 10px" src="assets/minez_logo.png" alt="Minez Logo">
-
 # Minez Documentation
-
+<img align="left" width="90" style="padding-left: 10px; padding-right: 20px; padding-bottom: 10px;" src="assets/minez_logo.png" alt="Minez Logo">
 **Minez** is an esoteric programming language created by *Dooblix* in 2024 (current version: 2025), inspired by Urban Müller's minimalistic esoteric programming language "*Brainfuck*".
 
 For details on Minez' history and philosophy, see the Esolang Wiki page:
